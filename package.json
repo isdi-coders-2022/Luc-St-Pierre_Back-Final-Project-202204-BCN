@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src",
     "start-dev": "nodemon src -q",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test-coverage": "jest --coverage --watchAll=false",
+    "test": "jest --passWithNoTests"
   },
   "keywords": [],
   "author": "",
@@ -35,6 +37,7 @@
     "debug": "^4.3.4",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "helmet": "^5.1.0",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb-memory-server": "^8.5.2",
