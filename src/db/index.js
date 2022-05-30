@@ -1,4 +1,4 @@
-const debug = require("debug")("airbnb:server");
+const debug = require("debug")("airbnb:db");
 const chalk = require("chalk");
 const mongoose = require("mongoose");
 
