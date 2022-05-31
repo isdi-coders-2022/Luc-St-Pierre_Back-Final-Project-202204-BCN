@@ -1,6 +1,5 @@
 const debug = require("debug")("airbnb:server:controllers:user");
 const chalk = require("chalk");
-const bcrypt = require("bcrypt");
 
 const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
@@ -40,4 +39,4 @@ const userRegistration = async (req, res, next) => {
   }
 };
 
-module.exports = userRegistration;
+module.exports = { userRegistration };
