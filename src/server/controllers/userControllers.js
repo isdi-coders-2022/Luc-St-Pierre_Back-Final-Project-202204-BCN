@@ -1,5 +1,7 @@
 const debug = require("debug")("airbnb:server:controllers:user");
 const chalk = require("chalk");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
@@ -40,4 +42,49 @@ const userRegister = async (req, res, next) => {
   }
 };
 
-module.exports = { userRegister };
+const userLogin = async (req, res, next) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = User.findOne({ username });
+
+    if (!user) {
+      debug(chalk.red("username or password invalid"));
+      const error = customError(
+        403,
+        "Forbidden",
+        "username or password invalid"
+      );
+      next(error);
+    }
+
+    const userToken = {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      image: user.image,
+    };
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      debug(chalk.red("username or password invalid"));
+      const error = customError(
+        403,
+        "Forbidden",
+        "username or password invalid"
+      );
+      next(error);
+    }
+
+    const token = jwt.sign(userToken, process.env.JWT_SECRET, {
+      expiresIn: 60 * 60,
+    });
+
+    res.status(200).json({ token, id: user.id });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { userRegister, userLogin };
