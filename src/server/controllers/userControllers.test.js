@@ -38,4 +38,30 @@ describe("Given a userRegister middleware", () => {
       expect(res.json).toHaveBeenCalledWith(newUser);
     });
   });
+
+  describe("When it's invoked with a request for a user that already exist with a response", () => {
+    test("Then it should call the received next function with an error", async () => {
+      const req = {
+        body: {
+          username: userMock.username,
+          password: userMock.password,
+          name: userMock.name,
+          email: userMock.email,
+          image: userMock.image,
+        },
+      };
+
+      const next = jest.fn();
+
+      const expectedError = new Error(
+        `Username ${req.body.username} already exists!`
+      );
+      expectedError.code = 409;
+
+      User.findOne = jest.fn().mockReturnValue(true);
+      await userRegister(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
 });
