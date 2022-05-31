@@ -5,7 +5,7 @@ const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
-const userRegistration = async (req, res, next) => {
+const userRegister = async (req, res, next) => {
   const { name, username, password, email, image } = req.body;
 
   const user = await User.findOne({ username });
@@ -22,7 +22,7 @@ const userRegistration = async (req, res, next) => {
   try {
     const encryptedPassword = await encryptPassword(password);
 
-    const newUser = User.create({
+    const newUser = await User.create({
       name,
       username,
       password: encryptedPassword,
@@ -40,4 +40,4 @@ const userRegistration = async (req, res, next) => {
   }
 };
 
-module.exports = { userRegistration };
+module.exports = { userRegister };
