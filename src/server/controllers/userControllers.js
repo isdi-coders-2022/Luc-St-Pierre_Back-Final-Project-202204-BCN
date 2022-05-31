@@ -6,7 +6,7 @@ const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
 const userRegistration = async (req, res, next) => {
-  const { name, username, password, image } = req.body;
+  const { name, username, password, email, image } = req.body;
 
   const user = await User.findOne({ username });
 
@@ -26,6 +26,7 @@ const userRegistration = async (req, res, next) => {
       name,
       username,
       password: encryptedPassword,
+      email,
       image,
     });
 
