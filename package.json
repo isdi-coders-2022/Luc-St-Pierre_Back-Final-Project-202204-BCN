@@ -27,7 +27,9 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.js",
-      "!src/index.js"
+      "!src/index.js",
+      "!src/db/index.js",
+      "!src/server/initializeServer.js"
     ]
   },
   "dependencies": {
