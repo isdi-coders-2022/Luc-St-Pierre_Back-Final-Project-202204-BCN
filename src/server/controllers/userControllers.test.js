@@ -1,5 +1,6 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
+const jsonwebtoken = require("jsonwebtoken");
 const jwt = require("jsonwebtoken");
 const User = require("../../db/models/User");
 const { userMock } = require("../../mocks/usersMocks");
@@ -102,26 +103,21 @@ describe("Given a userLogin middleware", () => {
         body: { username: "LearningX", password: "Abcd1234" },
       };
 
-      const user = {
-        name: "lucamino",
-        username: "LearningX",
-        password:
-          "$2b$10$XuDQZZhWY/lJX3ILAyogne3NbbnjZKsyD98RDoyV1zaM78AJjtC6u",
-      };
-
-      User.findOne = jest.fn().mockResolvedValue(user);
-
-      const token = jwt.sign(user, process.env.JWT_SECRET);
-
       const res = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn().mockResolvedValue(token),
+        json: jest.fn(),
       };
+
+      const expectedToken = 9876543210;
+
+      User.findOne = jest.fn().mockResolvedValue(true);
+      bcrypt.compare = jest.fn().mockResolvedValue(true);
+      jwt.sign = jest.fn().mockReturnValue(expectedToken);
 
       await userLogin(req, res, () => null);
 
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith({ token: expectedToken });
     });
   });
 
