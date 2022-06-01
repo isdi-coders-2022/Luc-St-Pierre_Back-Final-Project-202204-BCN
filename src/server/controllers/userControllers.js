@@ -8,7 +8,7 @@ const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
 const userRegister = async (req, res, next) => {
-  const { name, username, password, email, image } = req.body;
+  const { name, username, password, email } = req.body;
 
   const user = await User.findOne({ username });
 
@@ -29,10 +29,9 @@ const userRegister = async (req, res, next) => {
       username,
       password: encryptedPassword,
       email,
-      image,
     });
 
-    debug(chalk.green(`user has been created with username: $${username}`));
+    debug(chalk.green(`user has been created with username: ${username}`));
 
     res.status(201).json(newUser);
   } catch (error) {
@@ -46,7 +45,7 @@ const userLogin = async (req, res, next) => {
   const { username, password } = req.body;
 
   try {
-    const user = User.findOne({ username });
+    const user = await User.findOne({ username });
 
     if (!user) {
       debug(chalk.red("username or password invalid"));

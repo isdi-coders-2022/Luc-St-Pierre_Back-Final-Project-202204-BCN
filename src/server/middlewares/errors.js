@@ -1,5 +1,5 @@
 require("dotenv").config();
-const debug = require("debug")("airbnb:server:middlewares:erros");
+const debug = require("debug")("airbnb:server:middlewares:errors");
 const chalk = require("chalk");
 
 const customError = require("../../utils/customError");
