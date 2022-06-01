@@ -70,7 +70,7 @@ describe("Given a userRegister middleware", () => {
 });
 
 describe("Given a userLogin middleware", () => {
-  describe("When it's invoked with a request and a user with an invalid password", () => {
+  describe("When its invoked with a request and a user with an invalid password", () => {
     test("Then it should call the received next function with a 'Password incorrect", async () => {
       const req = {
         body: { username: "LearningX", password: "Abceed1234" },
