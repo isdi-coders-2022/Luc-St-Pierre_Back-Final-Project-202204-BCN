@@ -60,11 +60,11 @@ const userLogin = async (req, res, next) => {
     const userToken = {
       id: user.id,
       name: user.name,
-      username: user.username,
-      image: user.image,
+      username,
     };
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    debug(chalk.red(`isPasswordCorrect ${isPasswordCorrect}`));
 
     if (!isPasswordCorrect) {
       debug(chalk.red("username or password invalid"));
@@ -80,7 +80,9 @@ const userLogin = async (req, res, next) => {
       expiresIn: 60 * 60,
     });
 
-    res.status(200).json({ token, id: user.id });
+    debug(chalk.red(`token ${token}`));
+
+    res.status(200).json({ token });
   } catch (error) {
     next(error);
   }
