@@ -124,4 +124,26 @@ describe("Given a userLogin middleware", () => {
       expect(res.json).toHaveBeenCalled();
     });
   });
+
+  describe("When invoked with a request with a user with username that doesn't exist", () => {
+    test("Then is should call the response's status method with code 403 and the json method with message 'username or password invalid'", async () => {
+      const req = {
+        body: {
+          username: "Frank",
+          password: "23dle3d",
+        },
+      };
+
+      const next = jest.fn();
+      const expectedError = new Error();
+      expectedError.code = 403;
+      expectedError.message = "username or password invalid";
+
+      User.findOne = jest.fn().mockResolvedValue(false);
+
+      await userLogin(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
 });
