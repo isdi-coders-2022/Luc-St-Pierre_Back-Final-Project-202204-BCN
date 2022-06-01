@@ -102,26 +102,43 @@ describe("Given a userLogin middleware", () => {
         body: { username: "LearningX", password: "Abcd1234" },
       };
 
-      const user = {
-        name: "lucamino",
-        username: "LearningX",
-        password:
-          "$2b$10$XuDQZZhWY/lJX3ILAyogne3NbbnjZKsyD98RDoyV1zaM78AJjtC6u",
-      };
-
-      User.findOne = jest.fn().mockResolvedValue(user);
-
-      const token = jwt.sign(user, process.env.JWT_SECRET);
-
       const res = {
         status: jest.fn().mockReturnThis(),
-        json: jest.fn().mockResolvedValue(token),
+        json: jest.fn(),
       };
+
+      const expectedToken = 9876543210;
+
+      User.findOne = jest.fn().mockResolvedValue(true);
+      bcrypt.compare = jest.fn().mockResolvedValue(true);
+      jwt.sign = jest.fn().mockReturnValue(expectedToken);
 
       await userLogin(req, res, () => null);
 
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith({ token: expectedToken });
+    });
+  });
+
+  describe("When invoked with a request with a user with username that doesn't exist", () => {
+    test("Then is should call the response's status method with code 403 and the json method with message 'username or password invalid'", async () => {
+      const req = {
+        body: {
+          username: "Frank",
+          password: "23dle3d",
+        },
+      };
+
+      const next = jest.fn();
+      const expectedError = new Error();
+      expectedError.code = 403;
+      expectedError.message = "username or password invalid";
+
+      User.findOne = jest.fn().mockResolvedValue(false);
+
+      await userLogin(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });
