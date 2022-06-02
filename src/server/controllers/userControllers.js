@@ -82,7 +82,7 @@ const userLogin = async (req, res, next) => {
 
     debug(chalk.red(`token ${token}`));
 
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   } catch (error) {
     next(error);
   }
