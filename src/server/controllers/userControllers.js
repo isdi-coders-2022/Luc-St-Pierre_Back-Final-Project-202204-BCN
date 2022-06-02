@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:user");
 const chalk = require("chalk");
 const bcrypt = require("bcrypt");
@@ -10,18 +11,18 @@ const encryptPassword = require("../../utils/encryptPassword");
 const userRegister = async (req, res, next) => {
   const { name, username, password, email } = req.body;
 
-  const user = await User.findOne({ username });
-
-  if (user) {
-    const error = customError(
-      409,
-      "bad request",
-      `Username ${username} already exists!`
-    );
-    next(error);
-  }
-
   try {
+    const user = await User.findOne({ username });
+
+    if (user) {
+      const error = customError(
+        409,
+        "bad request",
+        `Username ${username} already exists!`
+      );
+      next(error);
+    }
+
     const encryptedPassword = await encryptPassword(password);
 
     const newUser = await User.create({
@@ -33,7 +34,7 @@ const userRegister = async (req, res, next) => {
 
     debug(chalk.green(`user has been created with username: ${username}`));
 
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (error) {
     error.code = 400;
     error.message = "bad request";
@@ -82,7 +83,7 @@ const userLogin = async (req, res, next) => {
 
     debug(chalk.red(`token ${token}`));
 
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   } catch (error) {
     next(error);
   }
