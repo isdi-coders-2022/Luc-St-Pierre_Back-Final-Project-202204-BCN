@@ -5,6 +5,7 @@ const path = require("path");
 const router = express.Router();
 
 const { createPlace } = require("../controllers/placeControllers");
+const auth = require("../middlewares/auth");
 
 const upload = multer({
   dest: path.join("uploads", "images"),
@@ -13,6 +14,6 @@ const upload = multer({
   },
 });
 
-router.post("/places", upload.single("image"), createPlace);
+router.post("/places", auth, upload.single("image"), createPlace);
 
 module.exports = router;
