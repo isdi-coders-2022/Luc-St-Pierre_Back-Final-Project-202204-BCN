@@ -24,9 +24,10 @@ const createPlace = async (req, res, next) => {
   } = req.body;
 
   const { file } = req;
+  const prefixImage = Date.now();
 
   try {
-    const newImageName = `${Date.now()}-${file.originalName}`;
+    const newImageName = `${Date.now()}-${prefixImage}`;
 
     if (file) {
       fs.rename(
