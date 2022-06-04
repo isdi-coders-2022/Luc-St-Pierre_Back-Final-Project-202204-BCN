@@ -21,39 +21,23 @@ const createPlace = async (req, res, next) => {
     creator,
   } = req.body;
 
-  const session = await mongoose.startSession();
-
   try {
-    session.startTransaction();
+    const createdPlace = new Place({
+      title,
+      description,
+      location: { lat: 41.390205, lng: 2.154007 },
+      address,
+      city,
+      placeType,
+      price,
+      numberOfRooms,
+      numberOfbeds,
+      numberOfGuests,
+      image: "",
+      creator,
+    });
 
-    const createdPlace = await Place.create(
-      [
-        {
-          title,
-          description,
-          location: { lat: 41.390205, lng: 2.154007 },
-          address,
-          city,
-          placeType,
-          price,
-          numberOfRooms,
-          numberOfbeds,
-          numberOfGuests,
-          image: "",
-          creator,
-        },
-      ],
-      { session }
-    );
-
-    debug(chalk.green(`A place has been created with creator: ${creator}`));
-
-    const user = await User.findById(creator, { creator }, { session });
-
-    user.places = user.places.concat(createdPlace.id);
-    await user.save({ session });
-
-    await session.commitTransaction();
+    const user = await User.findById(creator);
 
     if (!user) {
       debug(chalk.red("username or password invalid"));
@@ -65,15 +49,20 @@ const createPlace = async (req, res, next) => {
       next(error);
     }
 
+    const savedCreatedPlace = await createdPlace.save();
+    debug(chalk.green(`A place has been created with creator: ${creator}`));
+
+    user.places = user.places.concat(savedCreatedPlace.id);
+
+    debug(chalk.green(`Added newly created place to user: ${user.name}`));
+    await user.save();
+
     return res.status(201).json({ place: createdPlace });
   } catch (error) {
-    await session.abortTransaction();
-    // console.log(error);
     error.code = 400;
     error.message = "bad request";
     next(error);
   }
-  session.endSession();
 };
 
 module.exports = { createPlace };
