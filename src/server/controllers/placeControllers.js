@@ -1,7 +1,6 @@
 /* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:place");
 const chalk = require("chalk");
-const { default: mongoose } = require("mongoose");
 
 const Place = require("../../db/models/Place");
 const User = require("../../db/models/User");
