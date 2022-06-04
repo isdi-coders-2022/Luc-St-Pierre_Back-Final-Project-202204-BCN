@@ -1,4 +1,4 @@
-const { Schema, model, default: mongoose } = require("mongoose");
+const { Schema, model, SchemaTypes } = require("mongoose");
 
 const UserSchema = new Schema(
   {
@@ -17,6 +17,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      select: false,
     },
     email: {
       type: String,
@@ -29,12 +30,10 @@ const UserSchema = new Schema(
     image: {
       type: String,
     },
-    places: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: ["Place"],
-      },
-    ],
+    places: {
+      type: [SchemaTypes.ObjectId],
+      ref: "Place",
+    },
   },
   {
     timestamps: true,
