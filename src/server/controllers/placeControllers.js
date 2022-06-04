@@ -25,21 +25,21 @@ const createPlace = async (req, res, next) => {
 
   const { file } = req;
 
-  const newImageName = file ? `${Date.now()}${file.originalName}` : "";
-
-  if (file) {
-    fs.rename(
-      path.join("uploads", "images", file.filename),
-      path.join("uploads", "images", newImageName),
-      async (error) => {
-        if (error) {
-          next(error);
-        }
-      }
-    );
-  }
-
   try {
+    const newImageName = `${Date.now()}-${file.originalName}`;
+
+    if (file) {
+      fs.rename(
+        path.join("uploads", "images", file.filename),
+        path.join("uploads", "images", newImageName),
+        async (error) => {
+          if (error) {
+            next(error);
+          }
+        }
+      );
+    }
+
     const createdPlace = new Place({
       title,
       description,
