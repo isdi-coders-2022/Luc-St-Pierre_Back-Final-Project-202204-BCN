@@ -1,6 +1,6 @@
 const { Joi } = require("express-validation");
 
-const registerValidation = {
+const registerValidationSchema = {
   body: Joi.object({
     name: Joi.string().alphanum().min(3).max(15).trim(true).required(),
     userName: Joi.string().alphanum().min(3).max(15).trim(true).required(),
@@ -13,7 +13,7 @@ const registerValidation = {
   }),
 };
 
-const loginValidation = {
+const loginValidationSchema = {
   body: Joi.object({
     userName: Joi.string().alphanum().min(3).max(15).trim(true).required(),
     pasword: Joi.string()
@@ -24,4 +24,4 @@ const loginValidation = {
   }),
 };
 
-module.exports = { registerValidation, loginValidation };
+module.exports = { registerValidationSchema, loginValidationSchema };
