@@ -1,13 +1,13 @@
 const userMockCredentials = {
-  username: "userX",
-  password: "passwordX",
+  username: "TextX4",
+  password: "abcd1234",
 };
 
 const userMock = {
   name: "userXMock",
-  username: "userX",
+  username: "TextX4",
   email: "userXMock@gmail.com",
-  password: "passwordX",
+  password: "abcd1234",
 };
 
 const usersMock = [
