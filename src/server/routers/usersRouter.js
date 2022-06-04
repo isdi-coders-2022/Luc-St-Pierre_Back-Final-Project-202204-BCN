@@ -5,10 +5,15 @@ const {
   loginValidationSchema,
 } = require("../../schemas/userSchemaValidation");
 
-const { userRegister, userLogin } = require("../controllers/userControllers");
+const {
+  userRegister,
+  userLogin,
+  getAllUsers,
+} = require("../controllers/userControllers");
 
 const router = express.Router();
 
+router.get("/", getAllUsers);
 router.post("/register", validate(registerValidationSchema), userRegister);
 router.post("/login", validate(loginValidationSchema), userLogin);
 

@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const { SchemaTypes } = require("mongoose");
 const { Schema, model } = require("mongoose");
 
 const PlaceSchema = new Schema(
@@ -13,7 +13,6 @@ const PlaceSchema = new Schema(
     },
     image: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
@@ -41,7 +40,6 @@ const PlaceSchema = new Schema(
     },
     numberOfBeds: {
       type: Number,
-      required: true,
     },
     numberOfGuests: {
       type: Number,
@@ -52,7 +50,7 @@ const PlaceSchema = new Schema(
       default: "Spain",
     },
     creator: {
-      type: mongoose.Types.ObjectId,
+      type: SchemaTypes.ObjectId,
       required: true,
       ref: "User",
     },
@@ -61,7 +59,7 @@ const PlaceSchema = new Schema(
       default: false,
     },
     reservedBy: {
-      type: mongoose.Types.ObjectId,
+      type: SchemaTypes.ObjectId,
       ref: "User",
     },
     approved: {

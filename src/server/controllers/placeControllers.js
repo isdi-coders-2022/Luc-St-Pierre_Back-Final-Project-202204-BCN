@@ -21,36 +21,39 @@ const createPlace = async (req, res, next) => {
     creator,
   } = req.body;
 
+  const session = await mongoose.startSession();
+
   try {
-    const place = await Place.findOne({ creator });
+    session.startTransaction();
 
-    if (place) {
-      const error = customError(
-        409,
-        "bad request",
-        `Place ${place} already exists!`
-      );
-      next(error);
-    }
-
-    const createdPlace = new Place({
-      title,
-      description,
-      location: { lat: 41.390205, lng: 2.154007 },
-      address,
-      city,
-      placeType,
-      price,
-      numberOfRooms,
-      numberOfbeds,
-      numberOfGuests,
-      image: "",
-      creator,
-    });
+    const createdPlace = await Place.create(
+      [
+        {
+          title,
+          description,
+          location: { lat: 41.390205, lng: 2.154007 },
+          address,
+          city,
+          placeType,
+          price,
+          numberOfRooms,
+          numberOfbeds,
+          numberOfGuests,
+          image: "",
+          creator,
+        },
+      ],
+      { session }
+    );
 
     debug(chalk.green(`A place has been created with creator: ${creator}`));
 
-    const user = await User.findOne({ creator });
+    const user = await User.findById(creator, { creator }, { session });
+
+    user.places = user.places.concat(createdPlace.id);
+    await user.save({ session });
+
+    await session.commitTransaction();
 
     if (!user) {
       debug(chalk.red("username or password invalid"));
@@ -62,19 +65,15 @@ const createPlace = async (req, res, next) => {
       next(error);
     }
 
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    await createdPlace.save({ session });
-    user.places.push(createPlace);
-    await user.save({ session });
-    await session.commitTransaction();
-
     return res.status(201).json({ place: createdPlace });
   } catch (error) {
+    await session.abortTransaction();
+    // console.log(error);
     error.code = 400;
     error.message = "bad request";
     next(error);
   }
+  session.endSession();
 };
 
 module.exports = { createPlace };
