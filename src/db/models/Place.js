@@ -74,6 +74,6 @@ const PlaceSchema = new Schema(
   }
 );
 
-const User = model("Place", PlaceSchema, "places");
+const Place = model("Place", PlaceSchema, "places");
 
-module.exports = User;
+module.exports = Place;
