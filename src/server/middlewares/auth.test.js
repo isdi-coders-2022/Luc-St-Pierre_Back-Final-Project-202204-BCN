@@ -1,12 +1,5 @@
-const verify = require("jsonwebtoken/verify");
+const jwt = require("jsonwebtoken");
 const auth = require("./auth");
-
-const mockRequest = { id: 10 };
-
-jest.mock("jsonwebtoken", () => ({
-  ...jest.requireActual("jsonwebtoken"),
-  verify: () => mockRequest,
-}));
 
 describe("Given an auth middleware function", () => {
   describe("When invoked with no token authorization", () => {
@@ -25,6 +18,25 @@ describe("Given an auth middleware function", () => {
       auth(req, null, next);
 
       expect(next).toBeCalledWith(expectedError);
+    });
+  });
+
+  describe("When invoked with a valid token", () => {
+    test("Then the next function should be invoked with the error", () => {
+      const req = {
+        headers: {
+          authorization: "Bearer 498s83sldfh4",
+        },
+      };
+
+      const next = jest.fn();
+
+      jwt.verify = jest.fn().mockReturnValue({ id: 10 });
+
+      auth(req, null, next);
+
+      expect(next).toHaveBeenCalled();
+      expect(req).toHaveProperty("userId", 10);
     });
   });
 });
