@@ -9,7 +9,7 @@ const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
 const userRegister = async (req, res, next) => {
-  const { name, username, password, email } = req.body;
+  const { name, username, email, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
@@ -28,8 +28,8 @@ const userRegister = async (req, res, next) => {
     const newUser = await User.create({
       name,
       username,
-      password: encryptedPassword,
       email,
+      password: encryptedPassword,
     });
 
     debug(chalk.green(`user has been created with username: ${username}`));

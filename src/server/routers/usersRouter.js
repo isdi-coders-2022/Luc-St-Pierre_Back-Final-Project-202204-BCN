@@ -1,12 +1,15 @@
 const express = require("express");
-const { userRegister, userLogin } = require("../controllers/userControllers");
+const { validate } = require("express-validation");
+const {
+  registerValidationSchema,
+  loginValidationSchema,
+} = require("../../schemas/userSchemaValidation");
 
-const loginValidation = require("../middlewares/loginValidation copy");
-const registerValidation = require("../middlewares/registerValidation");
+const { userRegister, userLogin } = require("../controllers/userControllers");
 
 const router = express.Router();
 
-router.post("/register", registerValidation, userRegister);
-router.post("/login", loginValidation, userLogin);
+router.post("/register", validate(registerValidationSchema), userRegister);
+router.post("/login", validate(loginValidationSchema), userLogin);
 
 module.exports = router;

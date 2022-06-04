@@ -2,49 +2,19 @@ const { Joi } = require("express-validation");
 
 const registerValidationSchema = {
   body: Joi.object({
-    name: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(15)
-      .messages({ message: "name is required" })
-      .trim(true)
-      .required(),
-    userName: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(15)
-      .messages({ message: "username is required" })
-      .trim(true)
-      .required(),
+    username: Joi.string().required().alphanum(),
+    password: Joi.string().required().alphanum().min(8).max(30),
+    name: Joi.string().required().alphanum(),
     email: Joi.string()
-      .email()
-      .messages({ message: "email is required" })
-      .trim(true)
-      .required(),
-    password: Joi.string()
-      .regex(/[a-zA-Z0-9]{3,30}/)
-      .messages({ message: "password is required" })
-      .min(8)
-      .trim(true)
+      .email({ tlds: { allow: false } })
       .required(),
   }),
 };
 
 const loginValidationSchema = {
   body: Joi.object({
-    userName: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(15)
-      .messages({ message: "username is required" })
-      .trim(true)
-      .required(),
-    pasword: Joi.string()
-      .regex(/[a-zA-Z0-9]{3,30}/)
-      .messages({ message: "password is required" })
-      .min(8)
-      .trim(true)
-      .required(),
+    username: Joi.string().required().alphanum(),
+    password: Joi.string().required().alphanum().min(8).max(30),
   }),
 };
 

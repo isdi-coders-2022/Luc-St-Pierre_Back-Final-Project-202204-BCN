@@ -13,18 +13,18 @@ beforeAll(async () => {
   await connectDB(database.getUri());
 });
 
-afterAll(async () => {
-  await mongoose.connection.close();
-  await database.stop();
-});
-
 beforeEach(async () => {
-  await request(app).post("/users/register").send(usersMock[0]).expect(201);
-  await request(app).post("/users/register").send(usersMock[1]).expect(201);
+  await User.create(usersMock[0]);
+  await User.create(usersMock[1]);
 });
 
 afterEach(async () => {
   await User.deleteMany();
+});
+
+afterAll(async () => {
+  await mongoose.connection.close();
+  await database.stop();
 });
 
 describe("Given a POST /users/register endpoint", () => {
@@ -32,7 +32,12 @@ describe("Given a POST /users/register endpoint", () => {
     test("Then it should return with a response status code 201 with the new user created", async () => {
       const { body } = await request(app)
         .post("/users/register")
-        .send(userMock)
+        .send({
+          username: userMock.username,
+          password: userMock.password,
+          email: userMock.email,
+          name: userMock.name,
+        })
         .expect(201);
 
       expect(body).toHaveProperty("username", userMock.username);
