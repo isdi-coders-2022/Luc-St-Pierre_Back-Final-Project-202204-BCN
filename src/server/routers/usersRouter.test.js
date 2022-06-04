@@ -48,18 +48,3 @@ describe("Given a POST /users/register endpoint", () => {
     });
   });
 });
-
-describe("Given a POST /users/login endpoint", () => {
-  describe("When it receives a request with an existing user", () => {
-    test("Then it should return with a response status code 200 with a token", async () => {
-      await request(app).post("/users/register").send(userMock).expect(201);
-
-      const { body } = await request(app)
-        .post("/users/login")
-        .send(userMockCredentials)
-        .expect(200);
-
-      expect(body.token).not.toBeNull();
-    });
-  });
-});
