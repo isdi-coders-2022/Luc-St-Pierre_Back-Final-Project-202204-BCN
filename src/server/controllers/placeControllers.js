@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:place");
 const chalk = require("chalk");
+const { default: mongoose } = require("mongoose");
 
 const Place = require("../../db/models/Place");
 const User = require("../../db/models/User");
@@ -32,7 +33,7 @@ const createPlace = async (req, res, next) => {
       next(error);
     }
 
-    const createdPlace = await Place.create({
+    const createdPlace = new Place({
       title,
       description,
       location: { lat: 41.390205, lng: 2.154007 },
@@ -47,6 +48,8 @@ const createPlace = async (req, res, next) => {
       creator,
     });
 
+    debug(chalk.green(`A place has been created with creator: ${creator}`));
+
     const user = await User.findOne({ creator });
 
     if (!user) {
@@ -59,9 +62,14 @@ const createPlace = async (req, res, next) => {
       next(error);
     }
 
-    debug(chalk.green(`A place has been created with creator: ${creator}`));
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await createdPlace.save({ session });
+    user.places.push(createPlace);
+    await user.save({ session });
+    await session.commitTransaction();
 
-    return res.status(201).json(createdPlace);
+    return res.status(201).json({ place: createdPlace });
   } catch (error) {
     error.code = 400;
     error.message = "bad request";

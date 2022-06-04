@@ -32,7 +32,7 @@ const UserSchema = new Schema(
     places: [
       {
         type: mongoose.Types.ObjectId,
-        ref: ["Place"],
+        ref: "Place",
       },
     ],
   },
