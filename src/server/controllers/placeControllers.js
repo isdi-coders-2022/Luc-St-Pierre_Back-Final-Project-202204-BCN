@@ -2,6 +2,9 @@
 const debug = require("debug")("airbnb:server:controllers:place");
 const chalk = require("chalk");
 
+const fs = require("fs");
+const path = require("path");
+
 const Place = require("../../db/models/Place");
 const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
@@ -20,7 +23,23 @@ const createPlace = async (req, res, next) => {
     creator,
   } = req.body;
 
+  const { file } = req;
+
   try {
+    const newImageName = `${Date.now()}-${file.originalName}`;
+
+    if (file) {
+      fs.rename(
+        path.join("uploads", "images", file.filename),
+        path.join("uploads", "images", newImageName),
+        async (error) => {
+          if (error) {
+            next(error);
+          }
+        }
+      );
+    }
+
     const createdPlace = new Place({
       title,
       description,
@@ -32,7 +51,7 @@ const createPlace = async (req, res, next) => {
       numberOfRooms,
       numberOfbeds,
       numberOfGuests,
-      image: "",
+      image: file ? path.join("images", newImageName) : "",
       creator,
     });
 

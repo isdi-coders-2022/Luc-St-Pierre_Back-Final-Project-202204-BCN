@@ -1,8 +1,18 @@
 const express = require("express");
-const { createPlace } = require("../controllers/placeControllers");
+const multer = require("multer");
+const path = require("path");
 
 const router = express.Router();
 
-router.post("/places", createPlace);
+const { createPlace } = require("../controllers/placeControllers");
+
+const upload = multer({
+  dest: path.join("uploads", "images"),
+  limits: {
+    fileSize: 3000000,
+  },
+});
+
+router.post("/places", upload.single("image"), createPlace);
 
 module.exports = router;
