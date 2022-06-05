@@ -10,6 +10,8 @@ const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
 
 const createPlace = async (req, res, next) => {
+  const { userId: id } = req;
+
   const {
     title,
     description,
@@ -27,7 +29,7 @@ const createPlace = async (req, res, next) => {
   const prefixImage = Date.now();
 
   try {
-    const newImageName = `${Date.now()}-${prefixImage}`;
+    const newImageName = `${prefixImage}-${file.originalname}`;
 
     if (file) {
       fs.rename(
@@ -56,7 +58,7 @@ const createPlace = async (req, res, next) => {
       creator,
     });
 
-    const user = await User.findById(creator);
+    const user = await User.findOne({ id });
 
     if (!user) {
       debug(chalk.red("username or password invalid"));
