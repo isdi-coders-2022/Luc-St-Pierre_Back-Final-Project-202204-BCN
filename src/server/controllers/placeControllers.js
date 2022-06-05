@@ -9,6 +9,18 @@ const Place = require("../../db/models/Place");
 const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
 
+const getAllPlaces = async (req, res, next) => {
+  try {
+    const places = await Place.find({});
+    debug(chalk.green(`Here's all the places: ${places}`));
+
+    res.status(200).json({ places });
+  } catch {
+    const error = customError(400, "Bad request");
+    next(error);
+  }
+};
+
 const createPlace = async (req, res, next) => {
   const { userId: id } = req;
 
@@ -86,4 +98,4 @@ const createPlace = async (req, res, next) => {
   }
 };
 
-module.exports = { createPlace };
+module.exports = { createPlace, getAllPlaces };
