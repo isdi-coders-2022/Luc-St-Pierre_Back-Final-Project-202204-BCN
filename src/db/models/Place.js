@@ -62,6 +62,22 @@ const PlaceSchema = new Schema(
       type: SchemaTypes.ObjectId,
       ref: "User",
     },
+    rating: {
+      type: Number,
+    },
+    isListed: {
+      type: Boolean,
+      default: false,
+    },
+    date: {
+      type: Date,
+    },
+    kilometers: {
+      type: Number,
+    },
+    category: {
+      type: String,
+    },
     approved: {
       type: Boolean,
       default: false,
