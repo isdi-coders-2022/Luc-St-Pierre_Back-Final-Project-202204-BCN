@@ -35,6 +35,10 @@ const createPlace = async (req, res, next) => {
     numberOfbeds,
     numberOfGuests,
     creator,
+    rating,
+    isListed,
+    kilometers,
+    category,
   } = req.body;
 
   const { file } = req;
@@ -68,6 +72,10 @@ const createPlace = async (req, res, next) => {
       numberOfGuests,
       image: file ? path.join("images", newImageName) : "",
       creator,
+      rating,
+      isListed,
+      kilometers,
+      category,
     });
 
     const user = await User.findOne({ id });
@@ -90,7 +98,7 @@ const createPlace = async (req, res, next) => {
     debug(chalk.green(`Added newly created place to user: ${user.name}`));
     await user.save();
 
-    return res.status(201).json({ place: createdPlace });
+    res.status(201).json(createdPlace);
   } catch (error) {
     error.code = 400;
     error.message = "bad request";
