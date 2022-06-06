@@ -29,10 +29,12 @@ const UserSchema = new Schema(
     image: {
       type: String,
     },
-    places: {
-      type: [SchemaTypes.ObjectId],
-      ref: "Place",
-    },
+    places: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Place",
+      },
+    ],
   },
   {
     timestamps: true,

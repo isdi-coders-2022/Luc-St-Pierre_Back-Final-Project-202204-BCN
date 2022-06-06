@@ -90,15 +90,20 @@ const createPlace = async (req, res, next) => {
       next(error);
     }
 
-    const savedCreatedPlace = await createdPlace.save();
+    const newAddedPlace = await Place.create(createdPlace);
     debug(chalk.green(`A place has been created with creator: ${creator}`));
 
-    user.places = user.places.concat(savedCreatedPlace.id);
+    user.places.push(newAddedPlace);
 
-    debug(chalk.green(`Added newly created place to user: ${user.name}`));
-    await user.save();
+    const userUpdated = await User.findByIdAndUpdate(id, user, {
+      new: true,
+    });
 
-    res.status(201).json(createdPlace);
+    if (userUpdated) {
+      debug(chalk.green(`Added newly created place to user: ${user.name}`));
+    }
+
+    res.status(201).json(newAddedPlace);
   } catch (error) {
     error.code = 400;
     error.message = "bad request";
