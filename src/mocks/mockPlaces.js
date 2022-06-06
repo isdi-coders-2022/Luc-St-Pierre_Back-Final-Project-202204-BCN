@@ -1,15 +1,38 @@
-const mockPlace = {
-  title: "House near beaches",
-  description: "This is a description",
-  image: "abcd.jpeg",
-  address: "34 Llurai",
-  city: "Mongat",
-  placeType: "House",
-  price: 86,
-  numberOfRooms: 3,
-  numberOfBeds: 2,
-  numberOfGuests: 3,
-  creator: "629b88b726b95714b076c60a",
-};
+const mockPlaces = [
+  {
+    title: "House near beaches",
+    description: "This is a description",
+    image: "abcd.jpeg",
+    address: "34 Llurai",
+    city: "Mongat",
+    placeType: "House",
+    price: 86,
+    numberOfRooms: 3,
+    numberOfBeds: 2,
+    numberOfGuests: 3,
+    creator: "629b88b726b95714b076c60a",
+    rating: 4.88,
+    isListed: true,
+    kilometers: 343,
+    category: "Nationall parks",
+  },
+  {
+    title: "New york lovers",
+    description: "This is a description",
+    image: "abcd.jpeg",
+    address: "34 Llurai",
+    city: "Mongat",
+    placeType: "House",
+    price: 86,
+    numberOfRooms: 3,
+    numberOfBeds: 2,
+    numberOfGuests: 3,
+    creator: "629b88b726b95714b076c60b",
+    rating: 4.88,
+    isListed: true,
+    kilometers: 343,
+    category: "islands",
+  },
+];
 
-module.exports = mockPlace;
+module.exports = mockPlaces;
