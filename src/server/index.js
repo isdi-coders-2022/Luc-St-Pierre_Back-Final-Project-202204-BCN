@@ -3,6 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 
+const userRouter = require("./routers/userRouter");
 const usersRouter = require("./routers/usersRouter");
 const placesRouter = require("./routers/placesRouter");
 
@@ -15,6 +16,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(express.json());
 
+app.use("/user", userRouter);
 app.use("/users", usersRouter);
 app.use("/hosts", placesRouter);
 

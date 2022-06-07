@@ -8,15 +8,6 @@ const User = require("../../db/models/User");
 const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
-const getAllUsers = async (req, res, next) => {
-  try {
-    const users = await User.find({});
-    res.json(users);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const userRegister = async (req, res, next) => {
   const { name, username, email, password } = req.body;
 
@@ -98,4 +89,4 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { userRegister, userLogin, getAllUsers };
+module.exports = { userRegister, userLogin };

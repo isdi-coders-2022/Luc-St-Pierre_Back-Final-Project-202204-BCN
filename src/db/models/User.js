@@ -35,6 +35,15 @@ const UserSchema = new Schema(
         ref: "Place",
       },
     ],
+    wishlists: {
+      type: [
+        {
+          type: SchemaTypes.ObjectId,
+          ref: "Place",
+        },
+      ],
+      default: [],
+    },
   },
   {
     timestamps: true,
