@@ -7,22 +7,50 @@ const userMock = {
   name: "userXMock",
   username: "TextX4",
   email: "userXMock@gmail.com",
-  password: "abcd1234",
+  password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+  places: [],
+  wishlists: [],
 };
 
-const usersMock = [
+const mockNewUsers = [
   {
-    name: "userYMock",
-    username: "userY",
-    email: "userYMock@gmail.com",
-    password: "passwordY",
+    id: 1,
+    name: "lucamino",
+    username: "LearningX",
+    email: "lucamino@test.com",
+    password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+    places: [],
+    wishlists: [],
   },
   {
-    name: "userZMock",
-    username: "userZ",
-    email: "userZMock@gmail.com",
-    password: "passwordZ",
+    id: 2,
+    name: "Blinkwit",
+    username: "BlinkwitX",
+    email: "blinkwit@test.com",
+    password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+    places: [],
+    wishlists: [],
   },
 ];
 
-module.exports = { userMockCredentials, userMock, usersMock };
+const mockUsers = [
+  {
+    name: "lucamino",
+    username: "LearningX",
+    email: "lucamino@test.com",
+    location: "Barcelona",
+    password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+    places: [],
+    wishlists: [],
+  },
+  {
+    name: "Blinkwit",
+    username: "BlinkwitX",
+    email: "blinkwit@test.com",
+    password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+    places: [],
+    wishlists: [],
+  },
+];
+
+module.exports = { userMockCredentials, userMock, mockNewUsers, mockUsers };

@@ -1,6 +1,8 @@
 /* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:user");
 const chalk = require("chalk");
+const fs = require("fs");
+const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -9,7 +11,8 @@ const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
 const userRegister = async (req, res, next) => {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, location, password } = req.body;
+  const { file } = req;
 
   try {
     const user = await User.findOne({ username });
@@ -21,6 +24,21 @@ const userRegister = async (req, res, next) => {
         `Username ${username} already exists!`
       );
       next(error);
+      return;
+    }
+    const prefixImage = Date.now();
+    const newImageName = `${prefixImage}-${file.originalname}`;
+
+    if (file) {
+      fs.rename(
+        path.join("uploads", "images", file.filename),
+        path.join("uploads", "images", newImageName),
+        async (error) => {
+          if (error) {
+            next(error);
+          }
+        }
+      );
     }
 
     const encryptedPassword = await encryptPassword(password);
@@ -29,15 +47,16 @@ const userRegister = async (req, res, next) => {
       name,
       username,
       email,
+      location,
+      image: file ? path.join("images", newImageName) : "",
       password: encryptedPassword,
     });
 
     debug(chalk.green(`user has been created with username: ${username}`));
 
-    return res.status(201).json(newUser);
-  } catch (error) {
-    error.code = 400;
-    error.message = "bad request";
+    res.status(201).json({ new_user: { username: newUser.username } });
+  } catch {
+    const error = customError(400, "Bad request", "invalid user data");
     next(error);
   }
 };
