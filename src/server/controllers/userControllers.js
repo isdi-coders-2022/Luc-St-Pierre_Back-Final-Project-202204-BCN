@@ -75,16 +75,17 @@ const userLogin = async (req, res, next) => {
         "username or password invalid"
       );
       next(error);
+      return;
     }
 
     const userToken = {
       id: user.id,
       name: user.name,
-      username,
+      username: user.username,
+      image: user.image,
     };
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
-    debug(chalk.red(`isPasswordCorrect ${isPasswordCorrect}`));
 
     if (!isPasswordCorrect) {
       debug(chalk.red("username or password invalid"));
@@ -94,15 +95,14 @@ const userLogin = async (req, res, next) => {
         "username or password invalid"
       );
       next(error);
+      return;
     }
 
     const token = jwt.sign(userToken, process.env.JWT_SECRET, {
       expiresIn: 60 * 60,
     });
 
-    debug(chalk.red(`token ${token}`));
-
-    return res.status(200).json({ token });
+    res.status(200).json({ token });
   } catch (error) {
     next(error);
   }
