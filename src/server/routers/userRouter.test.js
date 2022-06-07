@@ -3,8 +3,13 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const { default: mongoose } = require("mongoose");
 const app = require("../index");
 const connectDB = require("../../db");
-const { usersMock, userMock } = require("../../mocks/usersMocks");
+const { mockNewUsers } = require("../../mocks/usersMocks");
 const User = require("../../db/models/User");
+
+jest.mock("fs", () => ({
+  ...jest.requireActual("fs"),
+  rename: jest.fn().mockReturnValue("1234image.jpg"),
+}));
 
 let database;
 
@@ -14,8 +19,8 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await User.create(usersMock[0]);
-  await User.create(usersMock[1]);
+  await User.create(mockNewUsers[0]);
+  await User.create(mockNewUsers[1]);
 });
 
 afterEach(async () => {
@@ -27,20 +32,28 @@ afterAll(async () => {
   await database.stop();
 });
 
-describe("Given a POST /users/register endpoint", () => {
+describe("Given a POST /user/register endpoint", () => {
   describe("When it receives a request with non existing user", () => {
     test("Then it should return with a response status code 201 with the new user created", async () => {
-      const { body } = await request(app)
-        .post("/users/register")
-        .send({
-          username: userMock.username,
-          password: userMock.password,
-          email: userMock.email,
-          name: userMock.name,
+      const file = "file";
+
+      const {
+        body: {
+          new_user: { username },
+        },
+      } = await request(app)
+        .post("/user/register")
+        .field("name", "lucamino")
+        .field("username", "learningx")
+        .field("password", "abcd1234")
+        .field("email", "lucamino@gmail.com")
+        .attach("image", Buffer.from(file, "utf-8"), {
+          filename: "12798217782",
+          originalname: "image.jpg",
         })
         .expect(201);
 
-      expect(body).toHaveProperty("username", userMock.username);
+      expect(username).toBe("learningx");
     });
   });
 });

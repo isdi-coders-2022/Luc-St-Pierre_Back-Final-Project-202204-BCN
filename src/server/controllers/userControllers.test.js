@@ -1,44 +1,36 @@
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 const User = require("../../db/models/User");
-const { userMock } = require("../../mocks/usersMocks");
+const { mockNewUsers } = require("../../mocks/usersMocks");
 const { userRegister, userLogin } = require("./userControllers");
 
 describe("Given a userRegister middleware", () => {
-  describe("When it's invoked with a user registration request with a user that doesn't exist with a response", () => {
-    test("Then it should call the response status method with status code 201 and json method with a new user without the pasword", async () => {
+  describe("When it's invoked with a user registration request with a user", () => {
+    test("Then it should call the response status method with status code 201", async () => {
       const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       };
 
       const req = {
-        body: {
-          username: userMock.username,
-          password: userMock.password,
-          name: userMock.name,
-          email: userMock.email,
-          image: userMock.image,
+        body: mockNewUsers[0],
+        file: {
+          filename: "1654639412855",
+          originalname: "image.jpg",
         },
       };
 
-      const next = jest.fn();
-
-      const newUser = {
-        username: userMock.username,
-        name: userMock.name,
-        email: userMock.email,
-        image: userMock.image,
-      };
+      jest.spyOn(path, "join").mockResolvedValue("image");
 
       User.findOne = jest.fn().mockResolvedValue(false);
-      User.create = jest.fn().mockResolvedValue(newUser);
+      bcrypt.hash = jest.fn().mockResolvedValue("encryptedPassword");
+      User.create = jest.fn().mockResolvedValue(mockNewUsers[0]);
 
-      await userRegister(req, res, next);
+      await userRegister(req, res);
 
       expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith(newUser);
     });
   });
 
@@ -46,11 +38,11 @@ describe("Given a userRegister middleware", () => {
     test("Then it should call the received next function with an error", async () => {
       const req = {
         body: {
-          username: userMock.username,
-          password: userMock.password,
-          name: userMock.name,
-          email: userMock.email,
-          image: userMock.image,
+          username: mockNewUsers[0].username,
+          password: mockNewUsers[0].password,
+          name: mockNewUsers[0].name,
+          email: mockNewUsers[0].email,
+          image: mockNewUsers[0].image,
         },
       };
 

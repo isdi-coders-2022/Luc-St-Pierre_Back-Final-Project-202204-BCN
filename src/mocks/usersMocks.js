@@ -7,22 +7,31 @@ const userMock = {
   name: "userXMock",
   username: "TextX4",
   email: "userXMock@gmail.com",
+  location: "Barcelona",
   password: "abcd1234",
 };
 
-const usersMock = [
+const mockNewUsers = [
   {
-    name: "userYMock",
-    username: "userY",
-    email: "userYMock@gmail.com",
-    password: "passwordY",
+    id: 1,
+    name: "lucamino",
+    username: "LearningX",
+    email: "lucamino@test.com",
+    location: "Barcelona",
+    password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+    places: [],
+    wishlists: [],
   },
   {
-    name: "userZMock",
-    username: "userZ",
-    email: "userZMock@gmail.com",
-    password: "passwordZ",
+    id: 2,
+    name: "Blinkwit",
+    username: "BlinkwitX",
+    email: "blinkwit@test.com",
+    location: "Madrid",
+    password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
+    places: [],
+    wishlists: [],
   },
 ];
 
-module.exports = { userMockCredentials, userMock, usersMock };
+module.exports = { userMockCredentials, userMock, mockNewUsers };
