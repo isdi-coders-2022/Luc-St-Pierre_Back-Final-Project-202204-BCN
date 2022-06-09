@@ -11,7 +11,7 @@ const customError = require("../../utils/customError");
 const encryptPassword = require("../../utils/encryptPassword");
 
 const userRegister = async (req, res, next) => {
-  const { name, username, email, location, password } = req.body;
+  const { name, username, email, password } = req.body;
   const { file } = req;
 
   try {
@@ -47,8 +47,6 @@ const userRegister = async (req, res, next) => {
       name,
       username,
       email,
-      location,
-      image: file ? path.join("images", newImageName) : "",
       password: encryptedPassword,
     });
 
