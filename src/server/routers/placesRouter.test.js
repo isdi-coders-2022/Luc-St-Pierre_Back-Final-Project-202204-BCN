@@ -111,6 +111,10 @@ describe("Given a POST /places endpoint", () => {
         .expect(201);
 
       expect(placeCreated).toHaveProperty("title", title);
+      expect(placeCreated).toHaveProperty("description", description);
+      expect(placeCreated).toHaveProperty("price", price);
+      expect(placeCreated).toHaveProperty("numberOfGuests", numberOfGuests);
+      expect(placeCreated).toHaveProperty("kilometers", kilometers);
     });
   });
 });
