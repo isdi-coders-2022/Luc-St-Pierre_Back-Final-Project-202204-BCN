@@ -14,7 +14,7 @@ const userMock = {
 const usersMock = [
   {
     name: "lucamino",
-    username: "learningx",
+    username: "LearningX",
     email: "lucamino@gmail.com",
     password: "abcd1234",
     image: "image",

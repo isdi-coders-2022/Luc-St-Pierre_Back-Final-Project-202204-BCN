@@ -31,7 +31,7 @@ beforeEach(async () => {
     .post("/user/register")
     .type("multipart/form-data")
     .field("name", "lucamino")
-    .field("username", "learningx")
+    .field("username", "LearningX")
     .field("password", "abcd1234")
     .field("email", "lucamino@gmail.com")
     .attach("image", Buffer.from("mockImageString", "utf-8"), {
