@@ -1,8 +1,6 @@
 /* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:place");
 const chalk = require("chalk");
-
-const fs = require("fs");
 const path = require("path");
 
 const Place = require("../../db/models/Place");
