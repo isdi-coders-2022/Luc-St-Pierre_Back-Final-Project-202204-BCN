@@ -81,6 +81,7 @@ const userLogin = async (req, res, next) => {
     const userToken = {
       id: user.id,
       name: user.name,
+      email: user.email,
       username: user.username,
       image: user.image,
     };
@@ -99,7 +100,7 @@ const userLogin = async (req, res, next) => {
     }
 
     const token = jwt.sign(userToken, process.env.JWT_SECRET, {
-      expiresIn: 60 * 60,
+      expiresIn: "1d",
     });
 
     res.status(200).json({ token });

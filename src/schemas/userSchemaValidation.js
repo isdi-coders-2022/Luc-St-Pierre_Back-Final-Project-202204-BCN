@@ -6,7 +6,8 @@ const registerValidationSchema = {
     password: Joi.string().required().alphanum().min(8).max(30),
     name: Joi.string().required().alphanum(),
     email: Joi.string()
-      .email({ tlds: { allow: false } })
+      .email()
+      .message({ message: "email is required" })
       .required(),
     location: Joi.string(),
     image: Joi.string().allow(null, ""),
