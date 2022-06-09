@@ -1,7 +1,5 @@
-/* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:user");
 const chalk = require("chalk");
-const fs = require("fs");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -12,7 +10,7 @@ const encryptPassword = require("../../utils/encryptPassword");
 
 const userRegister = async (req, res, next) => {
   const { name, username, email, password } = req.body;
-  const { file } = req;
+  const { file, newImageName, firebaseFileURL } = req;
 
   try {
     const user = await User.findOne({ username });
@@ -26,20 +24,6 @@ const userRegister = async (req, res, next) => {
       next(error);
       return;
     }
-    const prefixImage = Date.now();
-    const newImageName = `${prefixImage}-${file.originalname}`;
-
-    if (file) {
-      fs.rename(
-        path.join("uploads", "images", file.filename),
-        path.join("uploads", "images", newImageName),
-        async (error) => {
-          if (error) {
-            next(error);
-          }
-        }
-      );
-    }
 
     const encryptedPassword = await encryptPassword(password);
 
@@ -47,6 +31,8 @@ const userRegister = async (req, res, next) => {
       name,
       username,
       email,
+      image: file ? path.join("images", newImageName) : "",
+      imageBackup: file ? firebaseFileURL : "",
       password: encryptedPassword,
     });
 

@@ -7,6 +7,7 @@ const {
   getAllPlaces,
 } = require("../controllers/placeControllers");
 const auth = require("../middlewares/auth");
+const imageConverter = require("../middlewares/imageConverter");
 
 const router = express.Router();
 
@@ -18,6 +19,12 @@ const upload = multer({
 });
 
 router.get("/places", auth, getAllPlaces);
-router.post("/places", auth, upload.single("image"), createPlace);
+router.post(
+  "/places",
+  auth,
+  upload.single("image"),
+  imageConverter,
+  createPlace
+);
 
 module.exports = router;
