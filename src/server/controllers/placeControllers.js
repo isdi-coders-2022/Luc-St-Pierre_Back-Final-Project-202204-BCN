@@ -1,8 +1,6 @@
 /* eslint-disable consistent-return */
 const debug = require("debug")("airbnb:server:controllers:place");
 const chalk = require("chalk");
-
-const fs = require("fs");
 const path = require("path");
 
 const Place = require("../../db/models/Place");
@@ -22,8 +20,8 @@ const getAllPlaces = async (req, res, next) => {
 };
 
 const createPlace = async (req, res, next) => {
-  const { userId: id } = req;
-
+  const { userId: id, newImageName, firebaseFileURL } = req;
+  const { file } = req;
   const {
     title,
     description,
@@ -42,24 +40,7 @@ const createPlace = async (req, res, next) => {
     category,
   } = req.body;
 
-  const { file } = req;
-  const prefixImage = Date.now();
-
   try {
-    const newImageName = `${prefixImage}-${file.originalname}`;
-
-    if (file) {
-      fs.rename(
-        path.join("uploads", "images", file.filename),
-        path.join("uploads", "images", newImageName),
-        async (error) => {
-          if (error) {
-            next(error);
-          }
-        }
-      );
-    }
-
     const createdPlace = new Place({
       title,
       description,
@@ -73,6 +54,7 @@ const createPlace = async (req, res, next) => {
       numberOfbeds,
       numberOfGuests,
       image: file ? path.join("images", newImageName) : "",
+      imageBackup: file ? firebaseFileURL : "",
       creator,
       rating,
       isListed,
@@ -105,7 +87,7 @@ const createPlace = async (req, res, next) => {
       debug(chalk.green(`Added newly created place to user: ${user.name}`));
     }
 
-    res.status(201).json(newAddedPlace);
+    res.status(201).json({ new_place: newAddedPlace });
   } catch (error) {
     error.code = 400;
     error.message = "bad request";
