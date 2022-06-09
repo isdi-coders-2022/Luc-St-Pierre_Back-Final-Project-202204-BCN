@@ -38,7 +38,7 @@ const userRegister = async (req, res, next) => {
 
     debug(chalk.green(`user has been created with username: ${username}`));
 
-    res.status(201).json({ new_user: { username: newUser.username } });
+    res.status(201).json(newUser);
   } catch {
     const error = customError(400, "Bad request", "invalid user data");
     next(error);

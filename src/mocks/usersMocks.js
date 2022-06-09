@@ -7,9 +7,8 @@ const userMock = {
   name: "userXMock",
   username: "TextX4",
   email: "userXMock@gmail.com",
-  password: "$2b$10$W1hLqa2IAIP6Lrmjpxb83Ofew3cP2SWequHUDXMRxKNQSf/KABsYW",
-  places: [],
-  wishlists: [],
+  password: "abcd1234",
+  image: "image",
 };
 
 const mockNewUsers = [

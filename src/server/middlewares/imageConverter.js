@@ -25,7 +25,6 @@ const imageConverter = async (req, res, next) => {
 
   const prefixImage = Date.now();
   const newImageName = file ? `${prefixImage}-${file.originalname}` : "";
-  let firebaseFileURL;
 
   if (file) {
     await fs.rename(
@@ -52,7 +51,7 @@ const imageConverter = async (req, res, next) => {
             };
 
             await uploadBytes(storageRef, readFile, metadata);
-            firebaseFileURL = await getDownloadURL(storageRef);
+            const firebaseFileURL = await getDownloadURL(storageRef);
 
             req.newImageName = newImageName;
             req.firebaseFileURL = firebaseFileURL;
@@ -64,11 +63,9 @@ const imageConverter = async (req, res, next) => {
         );
       }
     );
-
-    if (firebaseFileURL) {
-      next();
-    }
   } else {
+    req.newImageName = "";
+    req.firebaseFileURL = "";
     next();
   }
 };
