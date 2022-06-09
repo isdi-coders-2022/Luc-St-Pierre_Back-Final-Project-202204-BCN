@@ -23,26 +23,26 @@ const PlaceSchema = new Schema(
       required: true,
     },
     location: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true },
+      lat: { type: String, required: true },
+      lng: { type: String, required: true },
     },
     placeType: {
       type: String,
       required: true,
     },
     price: {
-      type: Number,
+      type: String,
       required: true,
     },
     numberOfRooms: {
-      type: Number,
+      type: String,
       required: true,
     },
     numberOfBeds: {
-      type: Number,
+      type: String,
     },
     numberOfGuests: {
-      type: Number,
+      type: String,
       required: true,
     },
     country: {
@@ -63,7 +63,7 @@ const PlaceSchema = new Schema(
       ref: "User",
     },
     rating: {
-      type: Number,
+      type: String,
     },
     isListed: {
       type: Boolean,
@@ -73,7 +73,7 @@ const PlaceSchema = new Schema(
       type: Date,
     },
     kilometers: {
-      type: Number,
+      type: String,
     },
     category: {
       type: String,
