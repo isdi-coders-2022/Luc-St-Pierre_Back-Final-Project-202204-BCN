@@ -11,6 +11,23 @@ const userMock = {
   image: "image",
 };
 
+const usersMock = [
+  {
+    name: "lucamino",
+    username: "learningx",
+    email: "lucamino@gmail.com",
+    password: "abcd1234",
+    image: "image",
+  },
+  {
+    name: "vero",
+    username: "vera",
+    email: "vero@gmail.com",
+    password: "abcd1234",
+    image: "image",
+  },
+];
+
 const mockNewUsers = [
   {
     id: 1,
@@ -52,4 +69,10 @@ const mockUsers = [
   },
 ];
 
-module.exports = { userMockCredentials, userMock, mockNewUsers, mockUsers };
+module.exports = {
+  userMockCredentials,
+  userMock,
+  usersMock,
+  mockNewUsers,
+  mockUsers,
+};

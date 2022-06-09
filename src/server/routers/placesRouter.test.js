@@ -3,8 +3,9 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const { default: mongoose } = require("mongoose");
 const app = require("../index");
 const connectDB = require("../../db");
-const { userMock, mockUsers, usersMock } = require("../../mocks/usersMocks");
+const { usersMock } = require("../../mocks/usersMocks");
 const User = require("../../db/models/User");
+const mockPlaces = require("../../mocks/mockPlaces");
 
 jest.mock("firebase/storage", () => ({
   ref: jest.fn().mockReturnValue("thing"),
@@ -60,47 +61,15 @@ afterEach(async () => {
 describe("Given a POST /places endpoint", () => {
   describe("When it receives a request for creating a new place with a valid token", () => {
     test("Then it should return with a response status code 201 with the new places created", async () => {
-      const title = "House near beaches";
-      const description = "This is a description";
-      const image = "abcd.jpeg";
-      const address = "34 Llurai";
-      const city = "Mongat";
-      const placeType = "House";
-      const price = 86;
-      const numberOfRooms = 3;
-      const numberOfBeds = 2;
-      const numberOfGuests = 3;
-      const creator = "629b88b726b95714b076c60a";
-      const rating = 4.88;
-      const isListed = true;
-      const kilometers = 343;
-      const category = "Nationall parks";
-
-      const placeToCreate = {
-        title,
-        description,
-        image,
-        address,
-        city,
-        placeType,
-        price,
-        numberOfRooms,
-        numberOfBeds,
-        numberOfGuests,
-        creator,
-        rating,
-        isListed,
-        kilometers,
-        category,
-      };
+      const placeToCreate = mockPlaces[0];
 
       const {
         body: { token },
       } = await request(app)
         .post("/user/login")
         .send({
-          username: "learningx",
-          password: "abcd1234",
+          username: usersMock[0].username,
+          password: usersMock[0].password,
         })
         .expect(200);
 
@@ -110,11 +79,20 @@ describe("Given a POST /places endpoint", () => {
         .send(placeToCreate)
         .expect(201);
 
-      expect(placeCreated).toHaveProperty("title", title);
-      expect(placeCreated).toHaveProperty("description", description);
-      expect(placeCreated).toHaveProperty("price", price);
-      expect(placeCreated).toHaveProperty("numberOfGuests", numberOfGuests);
-      expect(placeCreated).toHaveProperty("kilometers", kilometers);
+      expect(placeCreated).toHaveProperty("title", placeToCreate.title);
+      expect(placeCreated).toHaveProperty(
+        "description",
+        placeToCreate.description
+      );
+      expect(placeCreated).toHaveProperty("price", placeToCreate.price);
+      expect(placeCreated).toHaveProperty(
+        "numberOfGuests",
+        placeToCreate.numberOfGuests
+      );
+      expect(placeCreated).toHaveProperty(
+        "kilometers",
+        placeToCreate.kilometers
+      );
     });
   });
 });
