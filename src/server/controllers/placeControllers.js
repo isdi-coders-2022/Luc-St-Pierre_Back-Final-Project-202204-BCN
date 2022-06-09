@@ -87,7 +87,7 @@ const createPlace = async (req, res, next) => {
       debug(chalk.green(`Added newly created place to user: ${user.name}`));
     }
 
-    res.status(201).json({ new_place: newAddedPlace });
+    res.status(201).json(newAddedPlace);
   } catch (error) {
     error.code = 400;
     error.message = "bad request";

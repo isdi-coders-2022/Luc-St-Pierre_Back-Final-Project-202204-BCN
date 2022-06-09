@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use("/user", userRouter);
 app.use("/users", usersRouter);
-app.use("/hosts", placesRouter);
+app.use("/places", placesRouter);
 
 app.use(notFoundError);
 app.use(generalError);

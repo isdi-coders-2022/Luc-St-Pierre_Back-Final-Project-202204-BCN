@@ -18,13 +18,7 @@ const upload = multer({
   },
 });
 
-router.get("/places", auth, getAllPlaces);
-router.post(
-  "/places",
-  auth,
-  upload.single("image"),
-  imageConverter,
-  createPlace
-);
+router.get("/", auth, getAllPlaces);
+router.post("/", auth, upload.single("image"), imageConverter, createPlace);
 
 module.exports = router;
