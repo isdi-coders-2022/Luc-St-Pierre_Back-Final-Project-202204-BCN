@@ -33,7 +33,7 @@ beforeEach(async () => {
     .field("name", "lucamino")
     .field("username", "LearningX")
     .field("password", "abcd1234")
-    .field("email", "lucamino@gmail.com")
+    .field("email", "lucamino@test.com")
     .attach("image", Buffer.from("mockImageString", "utf-8"), {
       filename: "mockImage",
       originalname: "image.jpg",
@@ -60,7 +60,7 @@ afterEach(async () => {
 
 describe("Given a POST /places endpoint", () => {
   describe("When it receives a request for creating a new place with a valid token", () => {
-    test("Then it should return with a response status code 201 with the new places created", async () => {
+    test("Then it should return with a response status code 201 with the new place created", async () => {
       const placeToCreate = mockPlaces[0];
 
       const {
