@@ -22,45 +22,15 @@ const getAllPlaces = async (req, res, next) => {
 const createPlace = async (req, res, next) => {
   const { userId: id, newImageName, firebaseFileURL } = req;
   const { file } = req;
-  const {
-    title,
-    description,
-    address,
-    city,
-    placeType,
-    placeDescription,
-    price,
-    numberOfRooms,
-    numberOfbeds,
-    numberOfGuests,
-    creator,
-    rating,
-    isListed,
-    kilometers,
-    category,
-  } = req.body;
+  const place = req.body;
 
   try {
-    const createdPlace = new Place({
-      title,
-      description,
-      location: { lat: 41.390205, lng: 2.154007 },
-      address,
-      city,
-      placeType,
-      placeDescription,
-      price,
-      numberOfRooms,
-      numberOfbeds,
-      numberOfGuests,
+    const newCreatedPlace = {
+      ...place,
+      creator: id,
       image: file ? path.join("images", newImageName) : "",
       imageBackup: file ? firebaseFileURL : "",
-      creator,
-      rating,
-      isListed,
-      kilometers,
-      category,
-    });
+    };
 
     const user = await User.findOne({ id });
 
@@ -74,8 +44,12 @@ const createPlace = async (req, res, next) => {
       next(error);
     }
 
-    const newAddedPlace = await Place.create(createdPlace);
-    debug(chalk.green(`A place has been created with creator: ${creator}`));
+    const newAddedPlace = await Place.create(newCreatedPlace);
+    debug(
+      chalk.green(
+        `A place has been created with creator: ${newCreatedPlace.creator}`
+      )
+    );
 
     user.places.push(newAddedPlace);
 
@@ -87,7 +61,7 @@ const createPlace = async (req, res, next) => {
       debug(chalk.green(`Added newly created place to user: ${user.name}`));
     }
 
-    res.status(201).json({ new_place: newAddedPlace });
+    res.status(201).json(newAddedPlace);
   } catch (error) {
     error.code = 400;
     error.message = "bad request";
