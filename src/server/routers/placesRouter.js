@@ -5,16 +5,16 @@ const path = require("path");
 const {
   createPlace,
   getAllPlaces,
-} = require("../controllers/placeControllers");
+} = require("../controllers/placeControllers/placeControllers");
 const auth = require("../middlewares/auth");
 const imageConverter = require("../middlewares/imageConverter");
 
 const router = express.Router();
 
-const upload = multer({
+const uploadPlace = multer({
   dest: path.join("uploads", "images"),
   limits: {
-    fileSize: 3000000,
+    fileSize: 5000000,
   },
 });
 
@@ -22,7 +22,7 @@ router.get("/places", auth, getAllPlaces);
 router.post(
   "/places",
   auth,
-  upload.single("image"),
+  uploadPlace.single("image"),
   imageConverter,
   createPlace
 );

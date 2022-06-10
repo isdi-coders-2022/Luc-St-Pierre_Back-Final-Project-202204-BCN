@@ -3,9 +3,9 @@ const debug = require("debug")("airbnb:server:controllers:place");
 const chalk = require("chalk");
 const path = require("path");
 
-const Place = require("../../db/models/Place");
-const User = require("../../db/models/User");
-const customError = require("../../utils/customError");
+const Place = require("../../../db/models/Place");
+const User = require("../../../db/models/User");
+const customError = require("../../../utils/customError");
 
 const getAllPlaces = async (req, res, next) => {
   try {
@@ -21,18 +21,48 @@ const getAllPlaces = async (req, res, next) => {
 
 const createPlace = async (req, res, next) => {
   const { userId: id, newImageName, firebaseFileURL } = req;
+
   const { file } = req;
-  const place = req.body;
+
+  const {
+    title,
+    description,
+    address,
+    city,
+    placeType,
+    placeDescription,
+    price,
+    numberOfRooms,
+    numberOfBeds,
+    numberOfGuests,
+    country,
+    rating,
+    kilometers,
+    category,
+  } = req.body;
 
   try {
+    const user = await User.findById(id);
+
     const newCreatedPlace = {
-      ...place,
-      creator: id,
+      title,
+      description,
       image: file ? path.join("images", newImageName) : "",
       imageBackup: file ? firebaseFileURL : "",
+      address,
+      city,
+      placeType,
+      placeDescription,
+      price,
+      numberOfRooms,
+      numberOfBeds,
+      numberOfGuests,
+      country,
+      creator: user.id,
+      rating,
+      kilometers,
+      category,
     };
-
-    const user = await User.findOne({ id });
 
     if (!user) {
       debug(chalk.red("username or password invalid"));
@@ -45,6 +75,7 @@ const createPlace = async (req, res, next) => {
     }
 
     const newAddedPlace = await Place.create(newCreatedPlace);
+
     debug(
       chalk.green(
         `A place has been created with creator: ${newCreatedPlace.creator}`

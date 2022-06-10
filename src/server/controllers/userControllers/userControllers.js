@@ -4,9 +4,9 @@ const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const User = require("../../db/models/User");
-const customError = require("../../utils/customError");
-const encryptPassword = require("../../utils/encryptPassword");
+const User = require("../../../db/models/User");
+const customError = require("../../../utils/customError");
+const encryptPassword = require("../../../utils/encryptPassword");
 
 const userRegister = async (req, res, next) => {
   const { name, username, email, password } = req.body;

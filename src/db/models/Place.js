@@ -5,11 +5,9 @@ const PlaceSchema = new Schema(
   {
     title: {
       type: String,
-      required: true,
     },
     description: {
       type: String,
-      required: true,
     },
     image: {
       type: String,
@@ -19,34 +17,31 @@ const PlaceSchema = new Schema(
     },
     address: {
       type: String,
-      required: true,
     },
     city: {
       type: String,
-      required: true,
     },
     location: {
-      lat: { type: Number, required: true },
-      lng: { type: Number, required: true },
+      lat: { type: Number, required: false },
+      lng: { type: Number, required: false },
     },
     placeType: {
       type: String,
-      required: true,
+    },
+    placeDescription: {
+      type: String,
     },
     price: {
       type: String,
-      required: true,
     },
     numberOfRooms: {
       type: String,
-      required: true,
     },
     numberOfBeds: {
       type: String,
     },
     numberOfGuests: {
       type: String,
-      required: true,
     },
     country: {
       type: String,
@@ -54,7 +49,7 @@ const PlaceSchema = new Schema(
     },
     creator: {
       type: SchemaTypes.ObjectId,
-      required: true,
+
       ref: "User",
     },
     isBooked: {
