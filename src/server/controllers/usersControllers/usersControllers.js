@@ -1,5 +1,5 @@
-const User = require("../../db/models/User");
-const customError = require("../../utils/customError");
+const User = require("../../../db/models/User");
+const customError = require("../../../utils/customError");
 
 const getAllUsers = async (req, res, next) => {
   try {

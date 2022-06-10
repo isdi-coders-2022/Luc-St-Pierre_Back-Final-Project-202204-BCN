@@ -7,8 +7,11 @@ const {
   registerValidationSchema,
   loginValidationSchema,
 } = require("../../schemas/userSchemaValidation");
+const {
+  userRegister,
+  userLogin,
+} = require("../controllers/userControllers/userControllers");
 
-const { userRegister, userLogin } = require("../controllers/userControllers");
 const imageConverter = require("../middlewares/imageConverter");
 
 const router = express.Router();

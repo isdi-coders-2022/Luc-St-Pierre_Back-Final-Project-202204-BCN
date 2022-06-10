@@ -1,6 +1,7 @@
-const mockPlaces = require("../../mocks/usersMocks");
 const { getAllPlaces } = require("./placeControllers");
-const Place = require("../../db/models/Place");
+
+const mockPlaces = require("../../../mocks/mockPlaces");
+const Place = require("../../../db/models/Place");
 
 describe("Given a createPlace middleware", () => {
   const req = {

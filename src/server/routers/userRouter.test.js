@@ -3,8 +3,8 @@ const { MongoMemoryServer } = require("mongodb-memory-server");
 const { default: mongoose } = require("mongoose");
 const app = require("../index");
 const connectDB = require("../../db");
-const { userMock } = require("../../mocks/usersMocks");
 const User = require("../../db/models/User");
+const { userMock } = require("../../mocks/usersMocks");
 
 jest.mock("firebase/storage", () => ({
   ref: jest.fn().mockReturnValue("thing"),
