@@ -21,47 +21,17 @@ const getAllPlaces = async (req, res, next) => {
 
 const createPlace = async (req, res, next) => {
   const { userId: id, newImageName, firebaseFileURL } = req;
-
+  const place = req.body;
   const { file } = req;
-
-  const {
-    title,
-    description,
-    address,
-    city,
-    placeType,
-    placeDescription,
-    price,
-    numberOfRooms,
-    numberOfBeds,
-    numberOfGuests,
-    country,
-    rating,
-    kilometers,
-    category,
-  } = req.body;
 
   try {
     const user = await User.findById(id);
 
     const newCreatedPlace = {
-      title,
-      description,
+      ...place,
+      creator: user.id,
       image: file ? path.join("images", newImageName) : "",
       imageBackup: file ? firebaseFileURL : "",
-      address,
-      city,
-      placeType,
-      placeDescription,
-      price,
-      numberOfRooms,
-      numberOfBeds,
-      numberOfGuests,
-      country,
-      creator: user.id,
-      rating,
-      kilometers,
-      category,
     };
 
     if (!user) {
