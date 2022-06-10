@@ -14,6 +14,9 @@ const PlaceSchema = new Schema(
     image: {
       type: String,
     },
+    imageBackup: {
+      type: String,
+    },
     address: {
       type: String,
       required: true,
@@ -23,8 +26,8 @@ const PlaceSchema = new Schema(
       required: true,
     },
     location: {
-      lat: { type: String, required: true },
-      lng: { type: String, required: true },
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true },
     },
     placeType: {
       type: String,

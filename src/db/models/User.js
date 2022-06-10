@@ -30,6 +30,9 @@ const UserSchema = new Schema(
       type: String,
       default: "",
     },
+    imageBackup: {
+      type: String,
+    },
     places: [
       {
         type: SchemaTypes.ObjectId,
