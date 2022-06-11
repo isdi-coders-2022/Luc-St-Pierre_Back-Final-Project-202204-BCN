@@ -63,9 +63,12 @@ const createPlace = async (req, res, next) => {
     }
 
     res.status(201).json(newAddedPlace);
-  } catch (error) {
-    error.code = 400;
-    error.message = "bad request";
+  } catch {
+    const error = customError(
+      400,
+      "Bad request",
+      "Error while trying to create a place"
+    );
     next(error);
   }
 };
@@ -95,4 +98,31 @@ const deletePlace = async (req, res, next) => {
   }
 };
 
-module.exports = { createPlace, getAllPlaces, deletePlace };
+const updatePlace = async (req, res, next) => {
+  const { placeId } = req.params;
+  let place = req.body;
+
+  const { file, newImageName, firebaseFileURL } = req;
+  debug(chalk.greenBright(`Request to update ${placeId} place Id`));
+
+  try {
+    if (file) {
+      place = {
+        ...place,
+        image: path.join("images", newImageName),
+        imageBackup: file ? firebaseFileURL : "",
+      };
+    }
+
+    const updatedPlace = await Place.findByIdAndUpdate(placeId, place, {
+      new: true,
+    });
+    debug(chalk.green(`Place ${placeId} Id updated`));
+    res.status(200).json({ updatedPlace });
+  } catch {
+    const error = customError(404, "Bad request", "Place Id not found");
+    next(error);
+  }
+};
+
+module.exports = { createPlace, getAllPlaces, deletePlace, updatePlace };
