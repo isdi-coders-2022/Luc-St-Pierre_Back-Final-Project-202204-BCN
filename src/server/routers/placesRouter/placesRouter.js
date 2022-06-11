@@ -5,6 +5,7 @@ const path = require("path");
 const {
   createPlace,
   getAllPlaces,
+  deletePlace,
 } = require("../../controllers/placesControllers/placesControllers");
 const auth = require("../../middlewares/auth");
 const imageConverter = require("../../middlewares/imageConverter");
@@ -26,5 +27,6 @@ router.post(
   imageConverter,
   createPlace
 );
+router.delete("/places/:placeId", auth, deletePlace);
 
 module.exports = router;

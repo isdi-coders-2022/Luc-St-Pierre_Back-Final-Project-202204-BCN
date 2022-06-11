@@ -70,4 +70,29 @@ const createPlace = async (req, res, next) => {
   }
 };
 
-module.exports = { createPlace, getAllPlaces };
+const deletePlace = async (req, res, next) => {
+  const { userId } = req;
+  const { placeId } = req.params;
+
+  try {
+    const deletedPlace = await Place.findByIdAndDelete(placeId);
+
+    if (deletedPlace) {
+      const updatedPlaces = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { places: placeId } },
+        { new: true }
+      );
+      if (updatedPlaces) {
+        debug(chalk.green(`Place ${placeId} deleted from user database`));
+      }
+    }
+    res.status(204).json(deletedPlace);
+    return;
+  } catch {
+    const error = customError(404, "Bad request", "Place id not found");
+    next(error);
+  }
+};
+
+module.exports = { createPlace, getAllPlaces, deletePlace };
