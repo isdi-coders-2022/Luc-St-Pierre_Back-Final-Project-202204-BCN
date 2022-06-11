@@ -6,13 +6,13 @@ const path = require("path");
 const {
   registerValidationSchema,
   loginValidationSchema,
-} = require("../../schemas/userSchemaValidation");
+} = require("../../../schemas/userSchemaValidation");
 const {
   userRegister,
   userLogin,
-} = require("../controllers/userControllers/userControllers");
+} = require("../../controllers/userControllers/userControllers");
 
-const imageConverter = require("../middlewares/imageConverter");
+const imageConverter = require("../../middlewares/imageConverter");
 
 const router = express.Router();
 
