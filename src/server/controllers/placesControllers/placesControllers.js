@@ -87,7 +87,7 @@ const deletePlace = async (req, res, next) => {
         debug(chalk.green(`Place ${placeId} deleted from user database`));
       }
     }
-    res.status(200).json(deletedPlace);
+    res.status(204).json(deletedPlace);
     return;
   } catch {
     const error = customError(404, "Bad request", "Place id not found");

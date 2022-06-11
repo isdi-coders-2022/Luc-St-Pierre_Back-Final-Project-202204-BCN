@@ -19,14 +19,14 @@ const uploadPlace = multer({
   },
 });
 
-router.get("/", auth, getAllPlaces);
+router.get("/places", auth, getAllPlaces);
 router.post(
-  "/",
+  "/places",
   auth,
   uploadPlace.single("image"),
   imageConverter,
   createPlace
 );
-router.delete("/:placeId", auth, deletePlace);
+router.delete("/places/:placeId", auth, deletePlace);
 
 module.exports = router;
