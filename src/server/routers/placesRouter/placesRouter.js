@@ -5,6 +5,7 @@ const path = require("path");
 const {
   createPlace,
   getAllPlaces,
+  deletePlace,
 } = require("../../controllers/placesControllers/placesControllers");
 const auth = require("../../middlewares/auth");
 const imageConverter = require("../../middlewares/imageConverter");
@@ -18,13 +19,14 @@ const uploadPlace = multer({
   },
 });
 
-router.get("/places", auth, getAllPlaces);
+router.get("/", auth, getAllPlaces);
 router.post(
-  "/places",
+  "/",
   auth,
   uploadPlace.single("image"),
   imageConverter,
   createPlace
 );
+router.delete("/:placeId", auth, deletePlace);
 
 module.exports = router;
