@@ -1,4 +1,4 @@
-const { getAllPlaces } = require("./placeControllers");
+const { getAllPlaces } = require("./placesControllers");
 
 const mockPlaces = require("../../../mocks/mockPlaces");
 const Place = require("../../../db/models/Place");

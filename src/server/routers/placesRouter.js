@@ -5,7 +5,7 @@ const path = require("path");
 const {
   createPlace,
   getAllPlaces,
-} = require("../controllers/placeControllers/placeControllers");
+} = require("../controllers/placesControllers/placesControllers");
 const auth = require("../middlewares/auth");
 const imageConverter = require("../middlewares/imageConverter");
 
