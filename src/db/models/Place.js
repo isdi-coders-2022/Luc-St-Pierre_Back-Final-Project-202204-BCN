@@ -49,7 +49,6 @@ const PlaceSchema = new Schema(
     },
     creator: {
       type: SchemaTypes.ObjectId,
-
       ref: "User",
     },
     isBooked: {

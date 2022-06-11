@@ -1,11 +1,11 @@
-const User = require("../../../db/models/User");
+const Place = require("../../../db/models/Place");
 const customError = require("../../../utils/customError");
 
 const getPlaceById = async (req, res, next) => {
   const { placeId } = req.params;
 
   try {
-    const placeDetail = await User.findById(placeId);
+    const placeDetail = await Place.findById(placeId);
 
     res.status(200).json({ placeDetail });
   } catch {
