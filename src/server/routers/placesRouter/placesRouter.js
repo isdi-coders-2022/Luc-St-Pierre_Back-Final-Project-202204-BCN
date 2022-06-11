@@ -6,6 +6,7 @@ const {
   createPlace,
   getAllPlaces,
   deletePlace,
+  updatePlace,
 } = require("../../controllers/placesControllers/placesControllers");
 const auth = require("../../middlewares/auth");
 const imageConverter = require("../../middlewares/imageConverter");
@@ -28,5 +29,12 @@ router.post(
   createPlace
 );
 router.delete("/places/:placeId", auth, deletePlace);
+router.put(
+  "/places/:placeId",
+  auth,
+  uploadPlace.single("image"),
+  imageConverter,
+  updatePlace
+);
 
 module.exports = router;
