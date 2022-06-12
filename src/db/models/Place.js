@@ -22,8 +22,15 @@ const PlaceSchema = new Schema(
       type: String,
     },
     location: {
-      lat: { type: Number, required: false },
-      lng: { type: Number, required: false },
+      type: {
+        type: String,
+        enum: ["Point"],
+        required: false,
+      },
+      coordinates: {
+        type: [Number],
+        required: false,
+      },
     },
     placeType: {
       type: String,
@@ -74,6 +81,25 @@ const PlaceSchema = new Schema(
     },
     category: {
       type: String,
+      enum: {
+        values: [
+          "Islands",
+          "Beach",
+          "Amazing pools",
+          "OMG!",
+          "National parks",
+          "Chalets",
+          "Design",
+          "Arctic",
+          "Tiny homes",
+          "Treehouses",
+          "Surfing",
+          "Amazing views",
+          "Lakefront",
+          "Camping",
+          "Shared homes",
+        ],
+      },
     },
     approved: {
       type: Boolean,
