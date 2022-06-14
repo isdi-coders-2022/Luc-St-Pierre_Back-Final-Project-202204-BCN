@@ -20,12 +20,12 @@ const getAllPlaces = async (req, res, next) => {
 };
 
 const createPlace = async (req, res, next) => {
-  const { userId: id, newImageName, firebaseFileURL } = req;
+  const { userId: id, firebaseFileURL, uploadedFiles } = req;
+
   const { lat, lon, ...place } = req.body;
   const { file } = req;
   try {
     const user = await User.findById(id);
-
     const newCreatedPlace = {
       ...place,
       location: {
@@ -33,7 +33,10 @@ const createPlace = async (req, res, next) => {
         coordinates: [lat, lon],
       },
       creator: user.id,
-      image: file ? path.join("images", newImageName) : "",
+      image: uploadedFiles.map((uploadedFile) => ({
+        ...uploadedFile,
+        fileName: path.join("images", uploadedFile.fileName),
+      })),
       imageBackup: file ? firebaseFileURL : "",
     };
 
@@ -117,14 +120,19 @@ const updatePlace = async (req, res, next) => {
   let place = req.body;
   delete place.lat;
   delete place.lon;
-  const { file, newImageName, firebaseFileURL } = req;
+  const { file, uploadedFiles, firebaseFileURL } = req;
   debug(chalk.greenBright(`Request to update ${placeId} place Id`));
 
   try {
     if (file) {
       place = {
         ...place,
-        image: path.join("images", newImageName),
+        image: uploadedFiles
+          ? uploadedFiles.map((uploadedFile) => ({
+              ...uploadedFile,
+              fileName: path.join("images", uploadedFile.fileName),
+            }))
+          : place.image,
         imageBackup: file ? firebaseFileURL : "",
       };
     }
