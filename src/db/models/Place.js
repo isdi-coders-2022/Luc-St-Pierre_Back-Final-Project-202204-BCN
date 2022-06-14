@@ -10,7 +10,7 @@ const PlaceSchema = new Schema(
       type: String,
     },
     image: {
-      type: String,
+      type: Array,
     },
     imageBackup: {
       type: String,

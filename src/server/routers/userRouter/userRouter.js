@@ -16,7 +16,7 @@ const imageConverter = require("../../middlewares/imageConverter");
 
 const router = express.Router();
 
-const upload = multer({
+const uploadUser = multer({
   dest: path.join("uploads", "images"),
   limits: {
     fileSize: 3000000,
@@ -25,7 +25,7 @@ const upload = multer({
 
 router.post(
   "/register",
-  upload.single("image"),
+  uploadUser.array("image"),
   imageConverter,
   validate(registerValidationSchema),
   userRegister

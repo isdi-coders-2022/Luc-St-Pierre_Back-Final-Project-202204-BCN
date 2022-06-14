@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs/promises");
 const path = require("path");
 const { initializeApp } = require("firebase/app");
 
@@ -21,54 +21,49 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 const imageConverter = async (req, res, next) => {
-  const { file } = req;
+  try {
+    const { file, files } = req;
+    // console.log("in img conv", { files });
+    let firebaseFileURL;
 
-  const prefixImage = Date.now();
-  const newImageName = file ? `${prefixImage}-${file.originalname}` : "";
-  let firebaseFileURL;
+    const filesToUpload = file ? [file] : files;
 
-  if (file) {
-    await fs.rename(
-      path.join("uploads", "images", file.filename),
-      path.join("uploads", "images", newImageName),
-      async (error) => {
-        if (error) {
-          next(error);
-        }
-
-        await fs.readFile(
-          path.join("uploads", "images", newImageName),
-          async (readError, readFile) => {
-            if (readError) {
-              next(readError);
-              return;
-            }
-            const storage = getStorage(firebaseApp);
-
-            const storageRef = ref(storage, newImageName);
-
-            const metadata = {
-              contentType: "image",
-            };
-
-            await uploadBytes(storageRef, readFile, metadata);
-            firebaseFileURL = await getDownloadURL(storageRef);
-
-            req.newImageName = newImageName;
-            req.firebaseFileURL = firebaseFileURL;
-
-            if (firebaseFileURL) {
-              next();
-            }
-          }
+    const urls = await Promise.all(
+      filesToUpload.map(async (fileItem) => {
+        const prefixImage = Date.now();
+        const newImageName = file ? `${prefixImage}-${file.originalname}` : "";
+        // await fs.rename(
+        //   path.join("uploads", "images", fileItem.filename),
+        //   path.join("uploads", "images", newImageName)
+        // );
+        const readFile = await fs.readFile(
+          path.join("uploads", "images", fileItem.filename)
         );
-      }
+        const storage = getStorage(firebaseApp);
+
+        const storageRef = ref(storage, fileItem.filename);
+
+        const metadata = {
+          contentType: "image",
+        };
+
+        await uploadBytes(storageRef, readFile, metadata);
+        firebaseFileURL = await getDownloadURL(storageRef);
+
+        // req.newImageName = newImageName;
+        // req.firebaseFileURL = firebaseFileURL;
+        return {
+          fileName: newImageName,
+          downloadURL: firebaseFileURL,
+        };
+      })
     );
-    if (firebaseFileURL) {
-      next();
-    }
-  } else {
+
+    req.uploadedFiles = urls;
+
     next();
+  } catch (error) {
+    next(error);
   }
 };
 

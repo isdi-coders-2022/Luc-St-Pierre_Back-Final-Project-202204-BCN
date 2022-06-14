@@ -24,7 +24,7 @@ router.get("/places", getAllPlaces);
 router.post(
   "/places",
   auth,
-  uploadPlace.single("image"),
+  uploadPlace.array("image"),
   imageConverter,
   createPlace
 );
@@ -32,7 +32,7 @@ router.delete("/places/:placeId", auth, deletePlace);
 router.put(
   "/places/:placeId",
   auth,
-  uploadPlace.single("image"),
+  uploadPlace.array("image"),
   imageConverter,
   updatePlace
 );
