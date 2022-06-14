@@ -1,61 +1,61 @@
-const request = require("supertest");
-const { MongoMemoryServer } = require("mongodb-memory-server");
-const { default: mongoose } = require("mongoose");
-const app = require("../../index");
-const connectDB = require("../../../db");
-const User = require("../../../db/models/User");
+// const request = require("supertest");
+// const { MongoMemoryServer } = require("mongodb-memory-server");
+// const { default: mongoose } = require("mongoose");
+// const app = require("../../index");
+// const connectDB = require("../../../db");
+// const User = require("../../../db/models/User");
 // const { userMock } = require("../../../mocks/usersMocks");
 
-jest.mock("firebase/storage", () => ({
-  ref: jest.fn().mockReturnValue("thing"),
-  uploadBytes: jest.fn().mockResolvedValue(),
-  getStorage: jest.fn(),
-  getDownloadURL: jest.fn().mockResolvedValue("url"),
-}));
+// jest.mock("firebase/storage", () => ({
+//   ref: jest.fn().mockReturnValue("thing"),
+//   uploadBytes: jest.fn().mockResolvedValue(),
+//   getStorage: jest.fn(),
+//   getDownloadURL: jest.fn().mockResolvedValue("url"),
+// }));
 
-let database;
+// let database;
 
-beforeAll(async () => {
-  database = await MongoMemoryServer.create();
-  await connectDB(database.getUri());
-});
+// beforeAll(async () => {
+//   database = await MongoMemoryServer.create();
+//   await connectDB(database.getUri());
+// });
 
-afterAll(async () => {
-  await mongoose.connection.close();
-  await database.stop();
-});
+// afterAll(async () => {
+//   await mongoose.connection.close();
+//   await database.stop();
+// });
 
-beforeEach(async () => {
-  await request(app)
-    .post("/user/register")
-    .type("multipart/form-data")
-    .field("name", "lucamino")
-    .field("username", "learningx")
-    .field("password", "abcd1234")
-    .field("email", "lucamino@gmail.com")
-    .attach("image", Buffer.from("mockImageString", "utf-8"), {
-      filename: "mockImage",
-      originalname: "image.jpg",
-    })
-    .expect(201);
+// beforeEach(async () => {
+//   await request(app)
+//     .post("/user/register")
+//     .type("multipart/form-data")
+//     .field("name", "lucamino")
+//     .field("username", "learningx")
+//     .field("password", "abcd1234")
+//     .field("email", "lucamino@gmail.com")
+//     .attach("image", Buffer.from("mockImageString", "utf-8"), {
+//       filename: "mockImage",
+//       originalname: "image.jpg",
+//     })
+//     .expect(201);
 
-  await request(app)
-    .post("/user/register")
-    .type("multipart/form-data")
-    .field("name", "vero")
-    .field("username", "vera")
-    .field("password", "abcd1234")
-    .field("email", "vero@gmail.com")
-    .attach("image", Buffer.from("mockImageString", "utf-8"), {
-      filename: "mockImage",
-      originalname: "image.jpg",
-    })
-    .expect(201);
-});
+//   await request(app)
+//     .post("/user/register")
+//     .type("multipart/form-data")
+//     .field("name", "vero")
+//     .field("username", "vera")
+//     .field("password", "abcd1234")
+//     .field("email", "vero@gmail.com")
+//     .attach("image", Buffer.from("mockImageString", "utf-8"), {
+//       filename: "mockImage",
+//       originalname: "image.jpg",
+//     })
+//     .expect(201);
+// });
 
-afterEach(async () => {
-  await User.deleteMany();
-});
+// afterEach(async () => {
+//   await User.deleteMany();
+// });
 
 // describe("Given a POST /user/register endpoint", () => {
 //   describe("When it receives a request with non existing user", () => {

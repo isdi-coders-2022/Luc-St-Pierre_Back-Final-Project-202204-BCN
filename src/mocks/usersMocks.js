@@ -4,6 +4,7 @@ const userMockCredentials = {
 };
 
 const userMock = {
+  id: "1",
   name: "userXMock",
   username: "TextX4",
   email: "userXMock@gmail.com",
