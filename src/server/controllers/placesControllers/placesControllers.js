@@ -21,14 +21,17 @@ const getAllPlaces = async (req, res, next) => {
 
 const createPlace = async (req, res, next) => {
   const { userId: id, newImageName, firebaseFileURL } = req;
-  const place = req.body;
+  const { lat, lon, ...place } = req.body;
   const { file } = req;
-
   try {
     const user = await User.findById(id);
 
     const newCreatedPlace = {
       ...place,
+      location: {
+        type: "Point",
+        coordinates: [lat, lon],
+      },
       creator: user.id,
       image: file ? path.join("images", newImageName) : "",
       imageBackup: file ? firebaseFileURL : "",
@@ -100,8 +103,10 @@ const deletePlace = async (req, res, next) => {
 
 const updatePlace = async (req, res, next) => {
   const { placeId } = req.params;
+  const { lat, lon } = req.body;
   let place = req.body;
-
+  delete place.lat;
+  delete place.lon;
   const { file, newImageName, firebaseFileURL } = req;
   debug(chalk.greenBright(`Request to update ${placeId} place Id`));
 
@@ -117,6 +122,14 @@ const updatePlace = async (req, res, next) => {
     const updatedPlace = await Place.findByIdAndUpdate(placeId, place, {
       new: true,
     });
+
+    if (lat && lon) {
+      updatedPlace.location = {
+        type: "Point",
+        coordinates: [lat, lon],
+      };
+    }
+
     debug(chalk.green(`Place ${placeId} Id updated`));
     res.status(200).json({ updatedPlace });
   } catch {
