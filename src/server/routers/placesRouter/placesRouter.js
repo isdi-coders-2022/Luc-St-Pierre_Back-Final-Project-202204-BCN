@@ -20,7 +20,7 @@ const uploadPlace = multer({
   },
 });
 
-router.get("/places", auth, getAllPlaces);
+router.get("/places", getAllPlaces);
 router.post(
   "/places",
   auth,
