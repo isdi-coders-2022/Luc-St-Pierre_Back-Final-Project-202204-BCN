@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-const imageConverter = async (req, res, next) => {
+const imagePlacesConverter = async (req, res, next) => {
   try {
     const { file, files } = req;
     // console.log("in img conv", { files });
@@ -67,4 +67,4 @@ const imageConverter = async (req, res, next) => {
   }
 };
 
-module.exports = imageConverter;
+module.exports = imagePlacesConverter;

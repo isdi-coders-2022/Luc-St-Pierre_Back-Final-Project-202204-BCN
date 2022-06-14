@@ -12,7 +12,7 @@ const {
   userLogin,
 } = require("../../controllers/userControllers/userControllers");
 
-const imageConverter = require("../../middlewares/imageConverter");
+const imageUserConverter = require("../../middlewares/imageUserConverter");
 
 const router = express.Router();
 
@@ -25,8 +25,8 @@ const uploadUser = multer({
 
 router.post(
   "/register",
-  uploadUser.array("image"),
-  imageConverter,
+  uploadUser.single("image"),
+  imageUserConverter,
   validate(registerValidationSchema),
   userRegister
 );
