@@ -23,7 +23,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const imagePlacesConverter = async (req, res, next) => {
   try {
     const { file, files } = req;
-    // console.log("in img conv", { files });
+
     let firebaseFileURL;
 
     const filesToUpload = file ? [file] : files;
@@ -32,10 +32,7 @@ const imagePlacesConverter = async (req, res, next) => {
       filesToUpload.map(async (fileItem) => {
         const prefixImage = Date.now();
         const newImageName = file ? `${prefixImage}-${file.originalname}` : "";
-        // await fs.rename(
-        //   path.join("uploads", "images", fileItem.filename),
-        //   path.join("uploads", "images", newImageName)
-        // );
+
         const readFile = await fs.readFile(
           path.join("uploads", "images", fileItem.filename)
         );
@@ -50,8 +47,6 @@ const imagePlacesConverter = async (req, res, next) => {
         await uploadBytes(storageRef, readFile, metadata);
         firebaseFileURL = await getDownloadURL(storageRef);
 
-        // req.newImageName = newImageName;
-        // req.firebaseFileURL = firebaseFileURL;
         return {
           fileName: newImageName,
           downloadURL: firebaseFileURL,
