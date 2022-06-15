@@ -1,6 +1,10 @@
 const path = require("path");
 
-const { getAllPlaces, createPlace } = require("./placesControllers");
+const {
+  getAllPlaces,
+  createPlace,
+  deletePlace,
+} = require("./placesControllers");
 
 const mockPlaces = require("../../../mocks/mockPlaces");
 const Place = require("../../../db/models/Place");
@@ -40,38 +44,34 @@ describe("Given a getAllPlaces middleware", () => {
   });
 });
 
-describe("Given a createPlace controller", () => {
+describe("Given a deletePlace controller", () => {
+  const expectedStatus = 204;
+
+  const req = {
+    params: {
+      placeId: 7,
+    },
+  };
   const res = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   };
 
-  jest
-    .spyOn(path, "join")
-    .mockResolvedValueOnce("image")
-    .mockReturnValueOnce(true)
-    .mockResolvedValue(new Error());
+  describe("When invoked with a place id corresponding to an existing place in the database in the req params", () => {
+    Place.findByIdAndDelete = jest.fn().mockResolvedValue(mockPlaces[0]);
+    User.findByIdAndUpdate = jest.fn().mockResolvedValue(true);
 
-  describe("When invoked with a new place with invalid data in the request", () => {
-    test("Then it should call the next received function with an error 'Error while trying to create a place'", async () => {
-      const req = {
-        body: mockPlaces[0],
-        file: {
-          filename: "12794217722",
-          originalname: "image.jpg",
-        },
-      };
+    test("Then it should call the response's status method with 200", async () => {
+      await deletePlace(req, res);
 
-      const expectedErrorMessage = "Error while trying to create a place";
-      const next = jest.fn();
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
 
-      const expectedError = new Error(expectedErrorMessage);
+    test("Then it should call the response's json method with the deleted place", async () => {
+      const expectedJsonResponse = mockPlaces[0];
+      await deletePlace(req, res);
 
-      Place.create = jest.fn().mockRejectedValue();
-
-      await createPlace(req, null, next);
-
-      expect(next).toHaveBeenCalledWith(expectedError);
+      expect(res.json).toHaveBeenCalledWith(expectedJsonResponse);
     });
   });
 });
