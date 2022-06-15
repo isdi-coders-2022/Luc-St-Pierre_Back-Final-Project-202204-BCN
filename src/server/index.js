@@ -4,7 +4,6 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 
 const userRouter = require("./routers/userRouter/userRouter");
-const usersRouter = require("./routers/usersRouter/usersRouter");
 const placesRouter = require("./routers/placesRouter/placesRouter");
 const placeRouter = require("./routers/placeRouter/placeRouter");
 
@@ -20,7 +19,6 @@ app.use(express.static("uploads"));
 app.use(express.json());
 
 app.use("/user", userRouter);
-app.use("/users", usersRouter);
 app.use("/hosts", placesRouter);
 app.use("/places", placeRouter);
 
