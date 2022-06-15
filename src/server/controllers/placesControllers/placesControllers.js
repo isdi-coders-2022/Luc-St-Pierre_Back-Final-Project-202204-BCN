@@ -10,7 +10,6 @@ const customError = require("../../../utils/customError");
 const getAllPlaces = async (req, res, next) => {
   try {
     const places = await Place.find({});
-    debug(chalk.green(`Here's all the places: ${places}`));
 
     res.status(200).json({ places });
   } catch {
@@ -84,16 +83,6 @@ const deletePlace = async (req, res, next) => {
   const { placeId } = req.params;
 
   try {
-    const place = await Place.findById(placeId);
-
-    if (!place) {
-      return next(customError(404, "Bad request", "Place id not found"));
-    }
-
-    if (place.creator !== userId) {
-      return next(customError(403, "You can't perform this operation."));
-    }
-
     const deletedPlace = await Place.findByIdAndDelete(placeId);
 
     if (deletedPlace) {
