@@ -1,10 +1,4 @@
-const path = require("path");
-
-const {
-  getAllPlaces,
-  createPlace,
-  deletePlace,
-} = require("./placesControllers");
+const { getAllPlaces, deletePlace } = require("./placesControllers");
 
 const mockPlaces = require("../../../mocks/mockPlaces");
 const Place = require("../../../db/models/Place");
