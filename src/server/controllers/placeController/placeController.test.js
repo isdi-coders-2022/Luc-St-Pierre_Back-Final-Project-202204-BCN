@@ -29,7 +29,7 @@ describe("Given a getPlaceById middleware", () => {
   });
 
   describe("When invoked with a valid token and a place id that doesn't exist in the request params", () => {
-    test("Then it should call the response's status method with 200 and the json method with the data of the place", async () => {
+    test("Then it should call the next function and return an error message 'Place Id not found'", async () => {
       const expectedErrorMessage = "Place Id not found";
       const expectedError = new Error(expectedErrorMessage);
 
