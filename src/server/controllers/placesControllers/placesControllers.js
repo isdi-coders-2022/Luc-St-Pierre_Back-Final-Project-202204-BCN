@@ -126,6 +126,8 @@ const updatePlace = async (req, res, next) => {
       };
     }
 
+    delete place.image;
+
     const updatedPlace = await Place.findByIdAndUpdate(placeId, place, {
       new: true,
     });
