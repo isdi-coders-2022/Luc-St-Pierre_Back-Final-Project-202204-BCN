@@ -27,4 +27,19 @@ describe("Given a getPlaceById middleware", () => {
       expect(res.json).toHaveBeenCalledWith(expectedJsonResponse);
     });
   });
+
+  describe("When invoked with a valid token and a place id that doesn't exist in the request params", () => {
+    test("Then it should call the response's status method with 200 and the json method with the data of the place", async () => {
+      const expectedErrorMessage = "Place Id not found";
+      const expectedError = new Error(expectedErrorMessage);
+
+      const next = jest.fn();
+
+      Place.findById = jest.fn().mockResolvedValue(mockPlaces[0]);
+
+      await getPlaceById(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
 });

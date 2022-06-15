@@ -9,7 +9,7 @@ const getPlaceById = async (req, res, next) => {
 
     res.status(200).json({ placeDetail });
   } catch {
-    const error = customError(404, "Not found", "User Id not found");
+    const error = customError(404, "Not found", "Place Id not found");
     next(error);
   }
 };
